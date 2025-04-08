@@ -9,8 +9,8 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppNavbar from './components/AppNavbar';
 import Header from './components/Header';
-import MainGrid from './components/MainGrid';
 import SideMenu from './components/SideMenu';
+import ChargeStationConfig from './components/ChargeStationConfig'
 import AppTheme from '../shared-theme/AppTheme';
 import {
   chartsCustomizations,
@@ -18,6 +18,7 @@ import {
   datePickersCustomizations,
   treeViewCustomizations,
 } from './theme/customizations';
+import {ChargingStation} from "@mui/icons-material";
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -26,12 +27,14 @@ const xThemeComponents = {
   ...treeViewCustomizations,
 };
 
+// 新增组件：用于显示五部分的内容
+
 export default function DataInput(props: { disableCustomTheme?: boolean }) {
   return (
     <AppTheme {...props} themeComponents={xThemeComponents}>
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
-        <SideMenu />
+        <SideMenu path={'规划方案'} />
         <AppNavbar />
         {/* Main content */}
         <Box
@@ -53,8 +56,8 @@ export default function DataInput(props: { disableCustomTheme?: boolean }) {
               mt: { xs: 8, md: 0 },
             }}
           >
-            <Header />
-            <MainGrid />
+            <Header path={'规划方案'} />
+            <ChargeStationConfig />
           </Stack>
         </Box>
       </Box>

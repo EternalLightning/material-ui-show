@@ -1,16 +1,9 @@
 import * as React from 'react';
 import {styled} from '@mui/material/styles';
-import Avatar from '@mui/material/Avatar';
 import MuiDrawer, {drawerClasses} from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import SelectContent from './SelectContent';
 import MenuContent from './MenuContent';
-import CardAlert from './CardAlert';
-import OptionsMenu from './OptionsMenu';
-import {Image} from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -25,7 +18,7 @@ const Drawer = styled(MuiDrawer)({
     },
 });
 
-export default function SideMenu() {
+export default function SideMenu(props: {path: string}) {
     return (
         <Drawer
             variant="permanent"
@@ -55,7 +48,7 @@ export default function SideMenu() {
                     flexDirection: 'column',
                 }}
             >
-                <MenuContent/>
+                <MenuContent path={props.path}/>
             </Box>
             {/*<Stack*/}
             {/*  direction="row"*/}

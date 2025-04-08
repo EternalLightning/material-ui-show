@@ -26,12 +26,12 @@ const xThemeComponents = {
     ...treeViewCustomizations,
 };
 
-export default function Dashboard(props: { disableCustomTheme?: boolean }) {
+export default function DataInput(props: { disableCustomTheme?: boolean }) {
     return (
         <AppTheme {...props} themeComponents={xThemeComponents}>
             <CssBaseline enableColorScheme/>
             <Box sx={{display: 'flex'}}>
-                <SideMenu path={'首页'}/>
+                <SideMenu path={'求解设置'}/>
                 <AppNavbar/>
                 {/* Main content */}
                 <Box
@@ -53,8 +53,7 @@ export default function Dashboard(props: { disableCustomTheme?: boolean }) {
                             mt: {xs: 8, md: 0},
                         }}
                     >
-                        <Header path={'首页'}/>
-                        <MainGrid/>
+                        <Header path={'求解设置'}/>
                     </Stack>
                 </Box>
             </Box>

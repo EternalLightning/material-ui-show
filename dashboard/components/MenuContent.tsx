@@ -12,10 +12,12 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import {useNavigate} from 'react-router-dom';
 import Collapse from '@mui/material/Collapse';
+import InputIcon from '@mui/icons-material/Input';
+import {createContext} from "react";
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
-    {text: '参数输入', icon: <AnalyticsRoundedIcon/>, path: '/data'},
+    {text: '参数输入', icon: <InputIcon/>, path: '/data'},
     {
         text: '计算结果',
         icon: <AnalyticsRoundedIcon/>,
@@ -34,9 +36,16 @@ const secondaryListItems = [
     {text: '关于', icon: <InfoRoundedIcon/>, path: '/about'},
 ];
 
+interface MenuSubItemsContextType {
+    openSubItems: string | null;
+    setOpenSubItems: (path: string | null) => void;
+}
+
+export const MenuSubItemsContext = createContext<MenuSubItemsContextType | {}>({});
+
 export default function MenuContent(props: {path: string}) {
     const navigate = useNavigate();
-    const [openSubItems, setOpenSubItems] = React.useState<string | null>(null); // 管理子列表的展开状态
+    const {openSubItems, setOpenSubItems} = React.useContext(MenuSubItemsContext); // 管理子列表的展开状态
 
     const handleItemClick = (path: string, subItems?: any[]) => {
         if (subItems && subItems.length > 0) {
@@ -61,7 +70,7 @@ export default function MenuContent(props: {path: string}) {
                             </ListItemButton>
                         </ListItem>
                         {/* 子列表 */}
-                        <Collapse in={openSubItems === item.path} timeout="auto" unmountOnExit>
+                        <Collapse in={openSubItems === item.path} timeout="auto">
                             <List component="div" disablePadding>
                                 {item.subItems && item.subItems.map((subItem, subIndex) => (
                                     <ListItem key={subIndex} disablePadding sx={{pl: 4}}>

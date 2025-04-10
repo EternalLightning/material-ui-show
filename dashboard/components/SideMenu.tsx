@@ -41,7 +41,7 @@ export default function SideMenu(props: {path: string}) {
             <CardMedia
               component="img"
               height="100%"
-              image="logo.png"
+              image="/logo.png"
               alt="Description"
             />
             </Box>

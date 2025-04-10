@@ -63,17 +63,17 @@ export default function MainGrid() {
             <StatCard {...card} />
           </Grid>
         ))}
+      </Grid>
+      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
+        详细信息
+      </Typography>
+      <Grid container spacing={2} columns={12}>
         <Grid size={{ xs: 12, md: 6 }}>
           <SessionsChart />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <PageViewsBarChart />
         </Grid>
-      </Grid>
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-        详细信息
-      </Typography>
-      <Grid container spacing={2} columns={12}>
         <Grid size={{ xs: 12, lg: 9 }}>
           <CustomizedDataGrid />
         </Grid>

@@ -78,12 +78,21 @@ export default function SystemConfig() {
                                         variant="standard"
                                     />
                                 </Grid>
-                                <Grid size={{xs: 2}}>
-                                    <TextField
-                                        label="是否显示求解细节（0-3）"
-                                        id="display-details"
-                                        variant="standard"
-                                    />
+                                <Grid size={{xs: 2}} sx={{marginTop: 0.67, marginBottom: -0.67}}>
+                                    <ThemeProvider theme={createTheme()}>
+                                        <FormControl variant="standard" sx={{m: 1, minWidth: 120}}>
+                                            <Select
+                                                labelId="display-details-label"
+                                                id="display-details"
+                                                defaultValue="0"
+                                            >
+                                                <MenuItem value="0">不显示</MenuItem>
+                                                <MenuItem value="1">少量</MenuItem>
+                                                <MenuItem value="2">正常</MenuItem>
+                                                <MenuItem value="3">详细</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </ThemeProvider>
                                 </Grid>
                             </>
                         )}

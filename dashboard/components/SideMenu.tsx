@@ -19,7 +19,7 @@ const Drawer = styled(MuiDrawer)({
     },
 });
 
-export default function SideMenu(props: {path: string}) {
+export default function SideMenu() {
     return (
         <Drawer
             variant="permanent"
@@ -42,7 +42,7 @@ export default function SideMenu(props: {path: string}) {
               component="img"
               height="100%"
               image="/logo.png"
-              alt="Description"
+              alt="上海交通大学"
             />
             </Box>
             <Divider/>
@@ -54,7 +54,7 @@ export default function SideMenu(props: {path: string}) {
                     flexDirection: 'column',
                 }}
             >
-                <MenuContent path={props.path}/>
+                <MenuContent/>
             </Box>
             {/*<Stack*/}
             {/*  direction="row"*/}

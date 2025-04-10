@@ -3,6 +3,7 @@ import {styled} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs, {breadcrumbsClasses} from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
+import {PathNameContext} from "../../src/context";
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     margin: theme.spacing(1, 0),
@@ -15,7 +16,9 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     },
 }));
 
-export default function NavbarBreadcrumbs(props: {path: string}) {
+export default function NavbarBreadcrumbs() {
+    const {pathName} = React.useContext(PathNameContext);
+
     return (
         <StyledBreadcrumbs
             aria-label="breadcrumb"
@@ -23,7 +26,7 @@ export default function NavbarBreadcrumbs(props: {path: string}) {
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
-                {props.path}
+                {pathName}
             </Typography>
         </StyledBreadcrumbs>
     );

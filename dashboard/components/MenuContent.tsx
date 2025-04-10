@@ -15,9 +15,9 @@ import Collapse from '@mui/material/Collapse';
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
-    {text: '规划方案', icon: <AnalyticsRoundedIcon/>, path: '/data'},
+    {text: '参数输入', icon: <AnalyticsRoundedIcon/>, path: '/data'},
     {
-        text: '查看方案',
+        text: '计算结果',
         icon: <AnalyticsRoundedIcon/>,
         path: '/scheme',
         subItems: [
@@ -34,7 +34,7 @@ const secondaryListItems = [
     {text: '关于', icon: <InfoRoundedIcon/>, path: '/about'},
 ];
 
-export default function MenuContent(props: { path: string}) {
+export default function MenuContent(props: {path: string}) {
     const navigate = useNavigate();
     const [openSubItems, setOpenSubItems] = React.useState<string | null>(null); // 管理子列表的展开状态
 

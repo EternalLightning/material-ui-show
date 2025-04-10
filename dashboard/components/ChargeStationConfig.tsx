@@ -15,7 +15,7 @@ export default function ChargeStationConfig(){
   ];
 
   return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
+    <Stack spacing={2} sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       {sections.map((section, index) => (
         <Box key={index} sx={{ border: '1px solid #ccc', p: 2, borderRadius: 1 }}>
           <Typography variant="h6" gutterBottom>
@@ -23,7 +23,7 @@ export default function ChargeStationConfig(){
           </Typography>
           <Grid container spacing={6}>
             {[...Array(9)].map((_, i) => (
-              <Grid item key={i}>
+              <Grid key={i}>
                 <TextField
                     id="standard-multiline-flexible"
                     multiline

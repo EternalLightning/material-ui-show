@@ -4,6 +4,7 @@ import MuiDrawer, {drawerClasses} from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import MenuContent from './MenuContent';
+import {CardMedia} from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -37,7 +38,12 @@ export default function SideMenu(props: {path: string}) {
                 }}
             >
                 {/*<SelectContent />*/}
-            <img src={'logo.png'} width={drawerWidth - 28}/>
+            <CardMedia
+              component="img"
+              height="100%"
+              image="logo.png"
+              alt="Description"
+            />
             </Box>
             <Divider/>
             <Box

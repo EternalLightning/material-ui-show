@@ -35,7 +35,7 @@ export default function DataInput(props: { disableCustomTheme?: boolean }) {
       <CssBaseline enableColorScheme />
       <Box sx={{ display: 'flex' }}>
         <SideMenu path={'规划方案'} />
-        <AppNavbar />
+        <AppNavbar path={'规划方案'}/>
         {/* Main content */}
         <Box
           component="main"

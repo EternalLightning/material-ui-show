@@ -11,7 +11,7 @@ import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import {useNavigate} from 'react-router-dom';
-import Collapse from '@mui/material/Collapse'; // 添加 Collapse 组件
+import Collapse from '@mui/material/Collapse';
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
@@ -34,7 +34,7 @@ const secondaryListItems = [
     {text: '关于', icon: <InfoRoundedIcon/>, path: '/about'},
 ];
 
-export default function MenuContent(props: { path: string }) {
+export default function MenuContent(props: { path: string}) {
     const navigate = useNavigate();
     const [openSubItems, setOpenSubItems] = React.useState<string | null>(null); // 管理子列表的展开状态
 

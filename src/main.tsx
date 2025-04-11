@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {PathNameContext} from "./context";
+import {context} from "./context";
 import AppTheme from "../shared-theme/AppTheme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -67,13 +67,11 @@ function MainPage(props: { disableCustomTheme?: boolean, children: any}) {
 
 function App() {
     const [openSubItems, setOpenSubItems] = React.useState<string | null>(null);
-    const [path, setPath] = React.useState<string>('/');
-    const [pathName, setPathName] = React.useState<string>('首页');
 
     return (
-        <PathNameContext.Provider value={{openSubItems, setOpenSubItems, path, setPath, pathName, setPathName}}>
+        <context.Provider value={{openSubItems, setOpenSubItems}}>
             <RouterProvider router={router}/>
-        </PathNameContext.Provider>
+        </context.Provider>
     )
 }
 

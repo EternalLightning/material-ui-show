@@ -10,10 +10,10 @@ import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
-import {PathNameContext} from "../../src/context";
+import {context} from "../../src/context";
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
@@ -40,16 +40,12 @@ export default function MenuContent() {
     const navigate = useNavigate();
     const {
         openSubItems, setOpenSubItems,
-        path, setPath,
-        setPathName
-    } = React.useContext(PathNameContext); // 管理子列表的展开状态
+    } = React.useContext(context); // 管理子列表的展开状态
 
-    const handleItemClick = (path: string, subItems?: any[], pathName: string) => {
+    const handleItemClick = (path: string, subItems?: any[]) => {
         if (subItems && subItems.length > 0) {
             setOpenSubItems!(openSubItems === path ? null : path); // 切换子列表的展开状态
         } else {
-            setPath!(path);
-            setPathName!(pathName);
             navigate(path); // 如果没有子列表，直接导航
         }
     };
@@ -61,8 +57,8 @@ export default function MenuContent() {
                     <React.Fragment key={index}>
                         <ListItem key={index} disablePadding sx={{display: 'block'}}>
                             <ListItemButton
-                                selected={item.path === path || (item.subItems && item.subItems.some(subItem => subItem.path === path))}
-                                onClick={() => handleItemClick(item.path, item.subItems, item.text)}
+                                selected={item.path === useLocation().pathname || (item.subItems && item.subItems.some(subItem => subItem.path === useLocation().pathname))}
+                                onClick={() => handleItemClick(item.path, item.subItems)}
                             >
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text}/>
@@ -74,12 +70,8 @@ export default function MenuContent() {
                                 {item.subItems && item.subItems.map((subItem, subIndex) => (
                                     <ListItem key={subIndex} disablePadding sx={{pl: 4}}>
                                         <ListItemButton
-                                            selected={subItem.path === path}
-                                            onClick={() => {
-                                                setPath!(subItem.path);
-                                                setPathName!(subItem.text);
-                                                navigate(subItem.path);
-                                            }}
+                                            selected={subItem.path === useLocation().pathname}
+                                            onClick={() => {navigate(subItem.path);}}
                                         >
                                             <ListItemText primary={subItem.text}/>
                                         </ListItemButton>
@@ -94,12 +86,8 @@ export default function MenuContent() {
                 {secondaryListItems.map((item, index) => (
                     <ListItem key={index} disablePadding sx={{display: 'block'}}>
                         <ListItemButton
-                            selected={item.path === path}
-                            onClick={() => {
-                                setPath!(item.path);
-                                setPathName!(item.text);
-                                navigate(item.path);
-                            }}
+                            selected={item.path === useLocation().pathname}
+                            onClick={() => {navigate(item.path);}}
                         >
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text}/>

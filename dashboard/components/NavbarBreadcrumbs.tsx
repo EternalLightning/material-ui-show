@@ -3,7 +3,7 @@ import {styled} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs, {breadcrumbsClasses} from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
-import {PathNameContext} from "../../src/context";
+import {useLocation} from "react-router-dom";
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     margin: theme.spacing(1, 0),
@@ -16,8 +16,18 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     },
 }));
 
+const pathName = new Map<string, string>([
+    ['/', '首页'],
+    ['/data', '参数输入'],
+    ['/calc', '数据计算'],
+    ['/settings', '求解设置'],
+    ['/about', '关于'],
+    ['/scheme/scheme1', '计算结果 > 方案1'],
+    ['/scheme/scheme2', '计算结果 > 方案2'],
+    ['/scheme/scheme3', '计算结果 > 方案3'],
+])
+
 export default function NavbarBreadcrumbs() {
-    const {pathName} = React.useContext(PathNameContext);
 
     return (
         <StyledBreadcrumbs
@@ -26,7 +36,7 @@ export default function NavbarBreadcrumbs() {
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
-                {pathName}
+                {pathName.get(useLocation().pathname)}
             </Typography>
         </StyledBreadcrumbs>
     );

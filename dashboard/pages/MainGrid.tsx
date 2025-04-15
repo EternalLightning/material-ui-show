@@ -10,7 +10,7 @@ import CustomizedDataGrid from '../components/CustomizedDataGrid';
 import PageViewsBarChart from '../components/PageViewsBarChart';
 import SessionsChart from '../components/SessionsChart';
 import StatCard, {StatCardProps} from '../components/StatCard';
-import {rows, columns} from '../internals/data/gridData'
+import {columns, rows} from '../internals/data/gridData'
 
 const data: StatCardProps[] = [
   {
@@ -47,7 +47,7 @@ const data: StatCardProps[] = [
 
 export default function MainGrid() {
   return (
-    <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
+      <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '2000px'}}}>
       {/* cards */}
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         最近计算的方案

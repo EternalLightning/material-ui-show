@@ -22,11 +22,12 @@ import CustomizedDataGrid from "../components/CustomizedDataGrid";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import {BarChart} from "@mui/x-charts/BarChart";
+import {axisClasses} from '@mui/x-charts/ChartsAxis';
 
 
 export default function Scheme1() {
     return (
-        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}}}>
+        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '2000px'}}}>
             <Typography component="h2" variant="h6" sx={{mb: 2}}>
                 方案详细信息
             </Typography>
@@ -51,35 +52,55 @@ export default function Scheme1() {
             </Typography>
             <Grid container spacing={2} columns={20} sx={{marginBottom: 3}}>
                 <Grid size={{xs: 20, md: 20, lg: 20, xl: 12}}>
-                    <Card variant="outlined">
-                        <Typography component="h1" variant="subtitle1" gutterBottom>
-                            小型发电机
-                        </Typography>
-                        <CustomizedDataGrid rows={gen_rows} columns={gen_columns}/>
+                    <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
+                        <CardContent>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                小型发电机
+                            </Typography>
+                            <CustomizedDataGrid rows={gen_rows} columns={gen_columns}/>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                最多可配置数：1
+                            </Typography>
+                        </CardContent>
                     </Card>
                 </Grid>
                 <Grid size={{xs: 20, md: 20, lg: 20, xl: 8}}>
-                    <Card variant="outlined">
-                        <Typography component="h1" variant="subtitle1" gutterBottom>
-                            光伏发电
-                        </Typography>
-                        <CustomizedDataGrid rows={solar_rows} columns={solar_columns}/>
+                    <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
+                        <CardContent>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                光伏发电
+                            </Typography>
+                            <CustomizedDataGrid rows={solar_rows} columns={solar_columns}/>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                最多可配置数：1
+                            </Typography>
+                        </CardContent>
                     </Card>
                 </Grid>
                 <Grid size={{xs: 20, md: 20, lg: 20, xl: 10}}>
-                    <Card variant="outlined">
-                        <Typography component="h1" variant="subtitle1" gutterBottom>
-                            风力发电
-                        </Typography>
-                        <CustomizedDataGrid rows={wind_rows} columns={wind_columns}/>
+                    <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
+                        <CardContent>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                风力发电
+                            </Typography>
+                            <CustomizedDataGrid rows={wind_rows} columns={wind_columns}/>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                最多可配置数：1
+                            </Typography>
+                        </CardContent>
                     </Card>
                 </Grid>
                 <Grid size={{xs: 20, md: 20, lg: 20, xl: 10}}>
-                    <Card variant="outlined">
-                        <Typography component="h1" variant="subtitle1" gutterBottom>
-                            储能电站
-                        </Typography>
-                        <CustomizedDataGrid rows={storage_rows} columns={storage_columns}/>
+                    <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
+                        <CardContent>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                储能电站
+                            </Typography>
+                            <CustomizedDataGrid rows={storage_rows} columns={storage_columns}/>
+                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                最多可配置数：1
+                            </Typography>
+                        </CardContent>
                     </Card>
                 </Grid>
             </Grid>
@@ -89,7 +110,7 @@ export default function Scheme1() {
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
                 <CardContent>
                     <Typography component="h2" variant="subtitle2" gutterBottom>
-                        日耗电量
+                        日耗电需求
                     </Typography>
                     <Stack sx={{justifyContent: 'space-between'}}>
                         <Typography variant="caption" sx={{color: 'text.secondary'}}>
@@ -102,14 +123,29 @@ export default function Scheme1() {
                         xAxis={[{
                             scaleType: 'band', data: Array.from({length: 33}, (_, i) => `节点${i + 1}`)
                         }]}
-                        series={[{data: [0, 0]},
-                            {data: [0, 100, 90, 120, 60, 60, 200, 200, 60, 60, 45, 60, 60, 120, 60, 60, 60, 90, 90, 90, 90, 90, 90, 420, 420, 60, 60, 60, 120, 200, 150, 210, 60]},
-                            {data: [0, 60, 40, 80, 30, 20, 100, 100, 20, 20, 30, 35, 35, 80, 10, 20, 20, 40, 40, 40, 40, 40, 50, 200, 200, 25, 25, 20, 70, 600, 70, 100, 40]}]}
+                        yAxis={[{
+                            label: '有功需求(kWh) / 无功需求(kvar)',
+                        }]}
+                        series={[
+                            {
+                                color: '#87CEFA',
+                                data: [0, 100, 90, 120, 60, 60, 200, 200, 60, 60, 45, 60, 60, 120, 60, 60, 60, 90, 90, 90, 90, 90, 90, 420, 420, 60, 60, 60, 120, 200, 150, 210, 60]
+                            },
+                            {
+                                color: 'purple',
+                                data: [0, 60, 40, 80, 30, 20, 100, 100, 20, 20, 30, 35, 35, 80, 10, 20, 20, 40, 40, 40, 40, 40, 50, 200, 200, 25, 25, 20, 70, 600, 70, 100, 40]
+                            }
+                        ]}
                         margin={{left: 50, right: 0, top: 20, bottom: 20}}
                         grid={{horizontal: true}}
                         slotProps={{
                             legend: {
                                 hidden: true,
+                            },
+                        }}
+                        sx={{
+                            [`.${axisClasses.left} .${axisClasses.label}`]: {
+                                transform: 'translate(-10px, 0)',
                             },
                         }}
                     />
@@ -122,7 +158,7 @@ export default function Scheme1() {
                 时段设置为1，整合电价为0.663元/kWh。
             </Card>
             <Typography component="h2" variant="h6" sx={{mb: 2}}>
-                辐照度和风力信息
+                辐照度和风力情报
             </Typography>
             <Grid container spacing={2} columns={12} sx={{marginBottom: 3}}>
                 <Grid size={{xs: 20, md: 6}}>

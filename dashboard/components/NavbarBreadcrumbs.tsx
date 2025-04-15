@@ -22,12 +22,13 @@ const pathName = new Map<string, string>([
     ['/calc', '数据计算'],
     ['/settings', '求解设置'],
     ['/about', '关于'],
-    ['/scheme/scheme1', '计算结果 > 方案1'],
-    ['/scheme/scheme2', '计算结果 > 方案2'],
-    ['/scheme/scheme3', '计算结果 > 方案3'],
-])
+    ['/scheme/scheme1', '方案1'],
+    ['/scheme/scheme2', '方案2'],
+    ['/scheme/scheme3', '方案3'],
+]);
 
 export default function NavbarBreadcrumbs() {
+    const currentPath = useLocation().pathname;
 
     return (
         <StyledBreadcrumbs
@@ -35,8 +36,11 @@ export default function NavbarBreadcrumbs() {
             separator={<NavigateNextRoundedIcon fontSize="small"/>}
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
+            {currentPath.startsWith('/scheme/') && (
+                <Typography variant="body1">计算结果</Typography>
+            )}
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
-                {pathName.get(useLocation().pathname)}
+                {pathName.get(currentPath)}
             </Typography>
         </StyledBreadcrumbs>
     );

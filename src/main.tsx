@@ -10,16 +10,17 @@ import AppNavbar from "../dashboard/components/AppNavbar";
 import {alpha} from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import Header from "../dashboard/components/Header";
-import MainGrid from "../dashboard/components/MainGrid";
-
+import MainGrid from "../dashboard/pages/MainGrid";
+import SystemConfig from "../dashboard/pages/SystemConfig";
+import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
+import Scheme1 from "../dashboard/pages/Scheme1";
 import {
     chartsCustomizations,
     dataGridCustomizations,
     datePickersCustomizations,
     treeViewCustomizations,
 } from '../dashboard/theme/customizations';
-import SystemConfig from "../dashboard/components/SystemConfig";
-import ChargeStationConfig from "../dashboard/components/ChargeStationConfig";
+
 
 const xThemeComponents = {
     ...chartsCustomizations,
@@ -120,7 +121,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme1",
         element: (
             <MainPage disableCustomTheme={false}>
-                <MainGrid />
+                <Scheme1/>
             </MainPage>
         ),
     },

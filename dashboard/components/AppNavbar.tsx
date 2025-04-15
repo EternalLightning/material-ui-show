@@ -41,7 +41,7 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     },
 }));
 
-export default function AppNavbar(props: {path: string}) {
+export default function AppNavbar() {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen: boolean) => () => {
@@ -82,7 +82,7 @@ export default function AppNavbar(props: {path: string}) {
                         >
                             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
                             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
-                                {props.path}
+                                test
                             </Typography>
                         </StyledBreadcrumbs>
                     </Stack>

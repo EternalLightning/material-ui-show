@@ -10,19 +10,21 @@ import CustomizedDataGrid from '../components/CustomizedDataGrid';
 import PageViewsBarChart from '../components/PageViewsBarChart';
 import SessionsChart from '../components/SessionsChart';
 import Card from '@mui/material/Card';
-import {bus_columns, bus_rows} from '../internals/data/schemeData1'
+import {branch_columns, branch_rows, bus_columns, bus_rows} from '../internals/data/schemeData1'
 import {DataGrid} from "@mui/x-data-grid";
-
 
 export default function Scheme1() {
     return (
         <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1700px'}}}>
+            <Typography component="h2" variant="h6" sx={{mb: 2}}>
+                方案详细信息
+            </Typography>
             <Card variant="outlined">
                 <Typography component="h2" variant="h6" sx={{mb: 2}}>
                     拓扑信息
                 </Typography>
                 <Typography variant="body1" sx={{mb: 2}}>
-                    节点名称：IEEE33
+                    网络名称：IEEE33
                 </Typography>
                 <Grid container spacing={2} columns={12} sx={{alignItems: 'center', justifyContent: 'center'}}>
                     <Grid size={{xs: 12, md: 6}}>
@@ -30,15 +32,22 @@ export default function Scheme1() {
                             rows={bus_rows}
                             columns={bus_columns}
                             initialState={{
-                                pagination: {paginationModel: {pageSize: 50}},
+                                pagination: {paginationModel: {pageSize: 20}},
                             }}
-                            pageSizeOptions={[50, 100]}
                             disableColumnResize
                             density="compact"
                         />
                     </Grid>
                     <Grid size={{xs: 12, md: 6}}>
-
+                        <DataGrid
+                            rows={branch_rows}
+                            columns={branch_columns}
+                            initialState={{
+                                pagination: {paginationModel: {pageSize: 20}},
+                            }}
+                            disableColumnResize
+                            density="compact"
+                        />
                     </Grid>
                 </Grid>
             </Card>

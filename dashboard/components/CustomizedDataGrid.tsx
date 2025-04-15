@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { columns, rows } from '../internals/data/gridData';
+import { DataGrid, GridColDef} from '@mui/x-data-grid';
 
-export default function CustomizedDataGrid() {
+
+export default function CustomizedDataGrid(props: { rows: readonly any[] | undefined, columns: readonly GridColDef<any>[]}) {
   return (
     <DataGrid
-      checkboxSelection
-      rows={rows}
-      columns={columns}
+      rows={props.rows}
+      columns={props.columns}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
       }

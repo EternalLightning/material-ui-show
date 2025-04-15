@@ -10,6 +10,7 @@ import CustomizedDataGrid from '../components/CustomizedDataGrid';
 import PageViewsBarChart from '../components/PageViewsBarChart';
 import SessionsChart from '../components/SessionsChart';
 import StatCard, {StatCardProps} from '../components/StatCard';
+import {rows, columns} from '../internals/data/gridData'
 
 const data: StatCardProps[] = [
   {
@@ -74,7 +75,7 @@ export default function MainGrid() {
           <PageViewsBarChart />
         </Grid>
         <Grid size={{ xs: 12, lg: 9 }}>
-          <CustomizedDataGrid />
+          <CustomizedDataGrid rows={rows} columns={columns}/>
         </Grid>
         <Grid size={{ xs: 12, lg: 3 }}>
           <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>

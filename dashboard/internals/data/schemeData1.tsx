@@ -34,22 +34,15 @@ export const bus_rows: GridRowsProp = [
     {id: 31, bus_num: 31, type: 1, mag: 1.0, angle: 0, max: 1.05, min: 0.9},
     {id: 32, bus_num: 32, type: 1, mag: 1.0, angle: 0, max: 1.05, min: 0.9},
     {id: 33, bus_num: 33, type: 1, mag: 1.0, angle: 0, max: 1.05, min: 0.9},
-    {id: -1, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -2, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -3, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -4, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -5, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -6, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -7, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
 ];
 
 export const bus_columns: GridColDef[] = [
-    {field: 'bus_num', headerName: '母线编号', minWidth: 100, headerAlign: 'center', align: 'center'},
-    {field: 'type', headerName: '节点类型', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'mag', headerName: '电压幅值', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'angle', headerName: '电压相角', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'max', headerName: '电压最大值', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'min', headerName: '电压最小值', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'bus_num', headerName: '母线编号', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'type', headerName: '节点类型', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'mag', headerName: '电压幅值', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'angle', headerName: '电压相角', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'max', headerName: '电压最大值', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'min', headerName: '电压最小值', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
 ];
 
 export const branch_rows: GridRowsProp = [
@@ -85,23 +78,82 @@ export const branch_rows: GridRowsProp = [
     {id: 30, from: 30, to: 31, r: 0.9744, x: 0.9630, b: 0, S_max: 4.5, I_max: 10},
     {id: 31, from: 31, to: 32, r: 0.3105, x: 0.3619, b: 0, S_max: 4.5, I_max: 10},
     {id: 32, from: 32, to: 33, r: 0.3410, x: 0.5302, b: 0, S_max: 4.5, I_max: 10},
-    {id: -1, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -2, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -3, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -4, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -5, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -6, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -7, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''},
-    {id: -8, from: '', to: '', r: '', x: '', b: '', S_max: '', I_max: ''}
 
 ];
 
 export const branch_columns: GridColDef[] = [
-    {field: 'from', headerName: '起始节点', minWidth: 100, headerAlign: 'center', align: 'center'},
-    {field: 'to', headerName: '终止节点', minWidth: 100, headerAlign: 'center', align: 'center'},
-    {field: 'r', headerName: '支路电阻', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'x', headerName: '支路电抗', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'b', headerName: '支路电纳', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'S_max', headerName: '最大容量', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
-    {field: 'I_max', headerName: '最大电流', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'from', headerName: '起始节点', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'to', headerName: '终止节点', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'r', headerName: '支路电阻', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'x', headerName: '支路电抗', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'b', headerName: '支路电纳', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'S_max', headerName: '最大容量', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'I_max', headerName: '最大电流', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
 ];
+
+export const gen_rows: GridRowsProp = [
+    {id: 1, conn_bus: 4, P_max: 1, P_min: 0, Q_max: 1, Q_min: 0, S: 1.3, SIC: 1, loss: 0.1, a: 20, tu: 8000, CF: 200, eff: 0.9},
+]
+export const gen_columns: GridColDef[] = [
+    {field: 'conn_bus', headerName: '相连母线', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_max', headerName: '最大有功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_min', headerName: '最小有功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'Q_max', headerName: '最大无功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'Q_min', headerName: '最小无功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'S', headerName: '最大容量', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'SIC', headerName: '动态比投资费用', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'loss', headerName: '线损率', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'a', headerName: '经济使用寿命', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'tu', headerName: '年运行利用小时数', minWidth: 140, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'CF', headerName: '燃料费用', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'eff', headerName: '发电效率', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+]
+
+export const solar_rows: GridRowsProp = [
+    {id: 1, conn_bus: 4, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 10800, b: 0.05},
+    {id: 2, conn_bus: 19, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 10800, b: 0.05},
+    {id: 3, conn_bus: 23, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 10800, b: 0.05},
+]
+
+export const solar_columns: GridColDef[] = [
+    {field: 'conn_bus', headerName: '相连母线', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_max', headerName: '最大有功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_min', headerName: '最小有功', minWidth: 100, headerAlign: 'center',align: 'center', flex: 1},
+    {field: 'n', headerName: '功率因数', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'S', headerName: '最大容量', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'k', headerName: '年化率系数', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'a', headerName: '单位容量投资成本', minWidth: 140, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'b', headerName: '发电成本', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+]
+
+export const wind_rows: GridRowsProp = [
+    {id: 1, conn_bus: 8, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 11520, b: 0.32},
+    {id: 2, conn_bus: 14, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 11520, b: 0.32},
+    {id: 3, conn_bus: 29, P_max: 0.09, P_min: 0, n: 0.9, S: 0.1, k: 0.0872, a: 11520, b: 0.32},
+]
+
+export const wind_columns: GridColDef[] = [
+    {field: 'conn_bus', headerName: '相连母线', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_max', headerName: '最大有功', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_min', headerName: '最小有功', minWidth: 100, headerAlign: 'center',align: 'center', flex: 1},
+    {field: 'n', headerName: '功率因数', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'S', headerName: '最大容量', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'k', headerName: '年化率系数', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'a', headerName: '单位容量投资成本', minWidth: 140, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'b', headerName: '发电成本', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+]
+
+export const storage_rows: GridRowsProp = [
+    {id: 1, conn_bus: 6, P_out: 0.2, P_in: 0.2, n: 0.9, S: 0.23, a: 13440, b: 0, c: 0}
+]
+
+export const storage_columns: GridColDef[] = [
+    {field: 'conn_bus', headerName: '相连母线', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_out', headerName: '最大输出有功', minWidth: 120, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'P_in', headerName: '最小输入有功', minWidth: 120, headerAlign: 'center',align: 'center', flex: 1},
+    {field: 'n', headerName: '功率因数', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'S', headerName: '最大容量', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'a', headerName: '单位容量投资成本', minWidth: 140, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'b', headerName: '发电成本', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+    {field: 'c', headerName: '运维成本', minWidth: 100, headerAlign: 'center', align: 'center', flex: 1},
+]

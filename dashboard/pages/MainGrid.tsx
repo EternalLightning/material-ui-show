@@ -1,16 +1,8 @@
 import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import Copyright from '../internals/components/Copyright';
-import ChartUserByCountry from '../components/ChartUserByCountry';
-import CustomizedTreeView from '../components/CustomizedTreeView';
-import CustomizedDataGrid from '../components/CustomizedDataGrid';
-import PageViewsBarChart from '../components/PageViewsBarChart';
-import SessionsChart from '../components/SessionsChart';
 import StatCard, {StatCardProps} from '../components/StatCard';
-import {columns, rows} from '../internals/data/gridData'
 
 const data: StatCardProps[] = [
   {
@@ -47,7 +39,10 @@ const data: StatCardProps[] = [
 
 export default function MainGrid() {
   return (
-      <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '2000px'}}}>
+      <Box sx={{
+          width: '100%',
+          maxWidth: {sm: '100%', md: '1900px'},
+      }}>
       {/* cards */}
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
         最近计算的方案
@@ -64,27 +59,6 @@ export default function MainGrid() {
           </Grid>
         ))}
       </Grid>
-      <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-        详细信息
-      </Typography>
-      <Grid container spacing={2} columns={12}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <SessionsChart />
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <PageViewsBarChart />
-        </Grid>
-        <Grid size={{ xs: 12, lg: 9 }}>
-          <CustomizedDataGrid rows={rows} columns={columns}/>
-        </Grid>
-        <Grid size={{ xs: 12, lg: 3 }}>
-          <Stack gap={2} direction={{ xs: 'column', sm: 'row', lg: 'column' }}>
-            <CustomizedTreeView />
-            <ChartUserByCountry />
-          </Stack>
-        </Grid>
-      </Grid>
-      <Copyright sx={{ my: 4 }} />
     </Box>
   );
 }

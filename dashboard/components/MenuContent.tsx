@@ -19,7 +19,7 @@ const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
     {text: '参数输入', icon: <InputIcon/>, path: '/data'},
     {
-        text: '计算结果',
+        text: '查看方案',
         icon: <AnalyticsRoundedIcon/>,
         path: '/scheme',
         subItems: [

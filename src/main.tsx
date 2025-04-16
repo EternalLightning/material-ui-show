@@ -14,12 +14,14 @@ import MainGrid from "../dashboard/pages/MainGrid";
 import SystemConfig from "../dashboard/pages/SystemConfig";
 import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
 import Scheme1 from "../dashboard/pages/Scheme1";
+import DataCalculation from "../dashboard/pages/DataCalculation";
 import {
     chartsCustomizations,
     dataGridCustomizations,
     datePickersCustomizations,
     treeViewCustomizations,
 } from '../dashboard/theme/customizations';
+import Copyright from '../dashboard/internals/components/Copyright'
 
 
 const xThemeComponents = {
@@ -34,7 +36,7 @@ function MainPage(props: { disableCustomTheme?: boolean, children: any}) {
     return (
         <AppTheme {...props} themeComponents={xThemeComponents}>
             <CssBaseline enableColorScheme/>
-            <Box sx={{display: 'flex'}}>
+            <Box sx={{display: 'flex', minHeight: 'calc(100vh - 6em)'}}>
                 <SideMenu/>
                 <AppNavbar/>
                 {/* Main content */}
@@ -62,6 +64,8 @@ function MainPage(props: { disableCustomTheme?: boolean, children: any}) {
                     </Stack>
                 </Box>
             </Box>
+            <Box flexGrow={1}/>
+            <Copyright sx={{my: 4}}/>
         </AppTheme>
     );
 }
@@ -97,7 +101,7 @@ const router = createBrowserRouter([
         path: "/calc",
         element: (
             <MainPage disableCustomTheme={false}>
-                {<p></p>}
+                <DataCalculation/>
             </MainPage>
         ),
     },

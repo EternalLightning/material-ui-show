@@ -37,7 +37,7 @@ export default function NavbarBreadcrumbs() {
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
             {currentPath.startsWith('/scheme/') && (
-                <Typography variant="body1">计算结果</Typography>
+                <Typography variant="body1">查看方案</Typography>
             )}
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
                 {pathName.get(currentPath)}

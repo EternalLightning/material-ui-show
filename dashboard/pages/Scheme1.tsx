@@ -2,7 +2,6 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Copyright from '../internals/components/Copyright';
 import Card from '@mui/material/Card';
 import {
     branch_columns,
@@ -27,15 +26,15 @@ import {axisClasses} from '@mui/x-charts/ChartsAxis';
 
 export default function Scheme1() {
     return (
-        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '2000px'}}}>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
+        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
+            <Typography component="h2" variant="h6" gutterBottom>
                 方案详细信息
             </Typography>
             <Card variant="outlined" sx={{marginBottom: 3}}>
                 <Typography component="h1" variant="subtitle1" gutterBottom>
                     拓扑信息
                 </Typography>
-                <Typography variant="body1" sx={{mb: 2}}>
+                <Typography variant="body1" gutterBottom>
                     网络名称：IEEE33
                 </Typography>
                 <Grid container spacing={2} columns={12}>
@@ -47,7 +46,7 @@ export default function Scheme1() {
                     </Grid>
                 </Grid>
             </Card>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
+            <Typography component="h2" variant="h6" gutterBottom>
                 出力信息
             </Typography>
             <Grid container spacing={2} columns={20} sx={{marginBottom: 3}}>
@@ -104,7 +103,7 @@ export default function Scheme1() {
                     </Card>
                 </Grid>
             </Grid>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
+            <Typography component="h2" variant="h6" gutterBottom>
                 功率需求
             </Typography>
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
@@ -151,14 +150,14 @@ export default function Scheme1() {
                     />
                 </CardContent>
             </Card>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
+            <Typography component="h2" variant="h6" gutterBottom>
                 电价数据
             </Typography>
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
                 时段设置为1，整合电价为0.663元/kWh。
             </Card>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
-                辐照度和风力情报
+            <Typography component="h2" variant="h6" gutterBottom>
+                辐照度和风力信息
             </Typography>
             <Grid container spacing={2} columns={12} sx={{marginBottom: 3}}>
                 <Grid size={{xs: 20, md: 6}}>
@@ -172,10 +171,6 @@ export default function Scheme1() {
                     </Card>
                 </Grid>
             </Grid>
-            <Typography component="h2" variant="h6" sx={{mb: 2}}>
-                计算结果
-            </Typography>
-            <Copyright sx={{my: 4}}/>
         </Box>
     );
 }

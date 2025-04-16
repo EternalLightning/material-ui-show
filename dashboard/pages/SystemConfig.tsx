@@ -21,7 +21,7 @@ export default function SystemConfig() {
     ];
 
     return (
-        <Stack spacing={2} sx={{width: '100%', maxWidth: {sm: '100%', md: '2000px'}}}>
+        <Stack spacing={2} sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
             {sections.map((section, index) => (
                 <Box key={index} sx={{border: '1px solid #ccc', p: 2, borderRadius: 1}}>
                     <Typography variant="h6" gutterBottom>

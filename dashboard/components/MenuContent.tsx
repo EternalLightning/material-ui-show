@@ -13,7 +13,7 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
-import {context} from "../../src/context";
+import {context} from "../../src/exportType";
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},

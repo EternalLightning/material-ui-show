@@ -18,7 +18,7 @@ import {BarChart} from "@mui/x-charts/BarChart";
 import {axisClasses} from '@mui/x-charts/ChartsAxis';
 
 
-export default function Scheme1() {
+export default function Scheme2() {
     return (
         <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
             <Typography component="h2" variant="h6" gutterBottom>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {context} from "./context";
+import {context} from "./exportType";
 import AppTheme from "../shared-theme/AppTheme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -13,7 +13,8 @@ import Header from "../dashboard/components/Header";
 import MainGrid from "../dashboard/pages/MainGrid";
 import SystemConfig from "../dashboard/pages/SystemConfig";
 import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
-import Scheme1 from "../dashboard/pages/Scheme1";
+import Scheme from "../dashboard/pages/Scheme"
+import {data3} from "../dashboard/internals/data/schemeData3"
 import DataCalculation from "../dashboard/pages/DataCalculation";
 import {
     chartsCustomizations,
@@ -125,7 +126,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme1",
         element: (
             <MainPage disableCustomTheme={false}>
-                <Scheme1/>
+                <Scheme data={data3}/>
             </MainPage>
         ),
     },
@@ -133,7 +134,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme2",
         element: (
             <MainPage disableCustomTheme={false}>
-                <MainGrid />
+                <p/>
             </MainPage>
         ),
     },
@@ -141,7 +142,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme3",
         element: (
             <MainPage disableCustomTheme={false}>
-                <MainGrid />
+                <Scheme data={data3}/>
             </MainPage>
         ),
     },

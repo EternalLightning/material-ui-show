@@ -4,14 +4,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import {
-    branch_columns, branch_rows,
-    bus_columns, bus_rows,
-    gen_columns, gen_rows,
-    solar_columns, solar_rows,
-    storage_columns, storage_rows,
-    wind_columns, wind_rows,
+    branch_columns,
+    branch_rows,
+    bus_columns,
+    bus_rows,
+    gen_columns,
+    gen_rows,
+    solar_columns,
+    solar_rows,
+    storage_columns,
+    storage_rows,
+    wind_columns,
+    wind_rows,
 } from '../internals/data/schemeData1'
-import CustomizedDataGrid from "../components/CustomizedDataGrid";
+import CustomizedDataGrid from "../components/CustomizedDataComponents";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import {BarChart} from "@mui/x-charts/BarChart";

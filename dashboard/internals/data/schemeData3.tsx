@@ -171,7 +171,7 @@ const wind_speed = 0.4;
 const pd = [0, 100, 90, 120, 60, 60, 200, 200, 60, 60, 45, 60, 60, 120, 60, 60, 60, 90, 90, 90, 90, 90, 90, 420, 420, 60, 60, 60, 120, 200, 150, 210, 60];
 const qd = [0, 60, 40, 80, 30, 20, 100, 100, 20, 20, 30, 35, 35, 80, 10, 20, 20, 40, 40, 40, 40, 40, 50, 200, 200, 25, 25, 20, 70, 600, 70, 100, 40];
 
-export const data3 = {
+export const data = {
     bus_rows, bus_columns,
     branch_rows, branch_columns,
     gen_rows, gen_columns,

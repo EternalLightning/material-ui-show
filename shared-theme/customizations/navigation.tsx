@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Theme, alpha, Components } from '@mui/material/styles';
-import { SvgIconProps } from '@mui/material/SvgIcon';
-import { buttonBaseClasses } from '@mui/material/ButtonBase';
-import { dividerClasses } from '@mui/material/Divider';
-import { menuItemClasses } from '@mui/material/MenuItem';
-import { selectClasses } from '@mui/material/Select';
-import { tabClasses } from '@mui/material/Tab';
+import {alpha, Components, Theme} from '@mui/material/styles';
+import {SvgIconProps} from '@mui/material/SvgIcon';
+import {buttonBaseClasses} from '@mui/material/ButtonBase';
+import {dividerClasses} from '@mui/material/Divider';
+import {menuItemClasses} from '@mui/material/MenuItem';
+import {selectClasses} from '@mui/material/Select';
+import {tabClasses} from '@mui/material/Tab';
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import { gray, brand } from '../themePrimitives';
+import {brand, gray} from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
 export const navigationCustomizations: Components<Theme> = {
@@ -64,13 +64,14 @@ export const navigationCustomizations: Components<Theme> = {
     },
     styleOverrides: {
       root: ({ theme }) => ({
-        borderRadius: (theme.vars || theme).shape.borderRadius,
+        borderRadius: '6px',
         border: '1px solid',
-        borderColor: gray[200],
+        borderColor: gray[100],
+        paddingLeft: '8px',
         backgroundColor: (theme.vars || theme).palette.background.paper,
-        boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
+        // boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
         '&:hover': {
-          borderColor: gray[300],
+          borderColor: gray[200],
           backgroundColor: (theme.vars || theme).palette.background.paper,
           boxShadow: 'none',
         },

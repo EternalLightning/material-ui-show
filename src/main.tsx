@@ -14,7 +14,8 @@ import MainGrid from "../dashboard/pages/MainGrid";
 import SystemConfig from "../dashboard/pages/SystemConfig";
 import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
 import Scheme from "../dashboard/pages/Scheme"
-import {data3} from "../dashboard/internals/data/schemeData3"
+import {data as data2} from "../dashboard/internals/data/schemeData2"
+import {data as data3} from "../dashboard/internals/data/schemeData3"
 import DataCalculation from "../dashboard/pages/DataCalculation";
 import {
     chartsCustomizations,
@@ -134,7 +135,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme2",
         element: (
             <MainPage disableCustomTheme={false}>
-                <p/>
+                <Scheme data={data2}/>
             </MainPage>
         ),
     },

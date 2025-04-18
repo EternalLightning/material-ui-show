@@ -74,7 +74,6 @@ export default function DataCalculation() {
                     gap: 2,
                 }}
             >
-                {/*<ThemeProvider theme={createTheme()}>*/}
                 {cards.map((card, index) => (
                     <Card variant={'outlined'} sx={{
                         width: '100%',
@@ -106,7 +105,6 @@ export default function DataCalculation() {
                         </CardActionArea>
                     </Card>
                 ))}
-                {/*</ThemeProvider>*/}
 
             </Box>
             <Box sx={{

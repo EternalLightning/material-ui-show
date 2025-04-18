@@ -29,10 +29,10 @@ export interface SchemeType {
         solar_num: number;
         wind_num: number;
         storage_num: number;
-        price: number;
-        solar_irradiance: number;
-        wind_speed: number;
-        pd: any;
-        qd: any;
+        price: number | number[];
+        solar_irradiance: number | number[];
+        wind_speed: number | number[];
+        pd: number[] | number[][];
+        qd: number[] | number[][];
     }
 }

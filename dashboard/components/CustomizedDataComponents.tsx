@@ -51,19 +51,22 @@ export function CustomizedDataGrid(props: {
 }
 
 
-export function CustomizedLineChart(props: { data: number[] }) {
+export function CustomizedLineChart(props: { data: number[], xLabel: string, yLabel: string, sLabel: string}) {
     return (
         <LineChart
-            height={250}
+            height={350}
             xAxis={[{
-                scaleType: 'band', data: Array.from({length: 24}, (_, i) => `${i + 1}时`)
+                label: props.xLabel,
+                scaleType: 'band',
+                data: Array.from({length: 24}, (_, i) => `${i + 1}时`)
             }]}
             yAxis={[{
-                label: '辐照度(%)',
+                label: props.yLabel,
             }]}
             series={[
                 {
                     id: 'irradiance',
+                    label: props.sLabel,
                     color: '#87CEFA',
                     data: props.data,
                     stack: 'total',

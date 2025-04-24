@@ -19,7 +19,7 @@ const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
     {text: '参数输入', icon: <InputIcon/>, path: '/data'},
     {
-        text: '查看方案',
+        text: '方案基础信息',
         icon: <AnalyticsRoundedIcon/>,
         path: '/scheme',
         subItems: [
@@ -28,7 +28,7 @@ const mainListItems = [
             {text: '方案3', path: '/scheme/scheme3'},
         ]
     },
-    {text: '数据计算', icon: <AssignmentRoundedIcon/>, path: '/calc'},
+    {text: '优化配置结果', icon: <AssignmentRoundedIcon/>, path: '/calc'},
 ];
 
 const secondaryListItems = [

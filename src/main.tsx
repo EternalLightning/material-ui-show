@@ -127,7 +127,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme1",
         element: (
             <MainPage disableCustomTheme={false}>
-                <Scheme data={data3}/>
+                <Scheme data={data2}/>
             </MainPage>
         ),
     },
@@ -143,7 +143,7 @@ const router = createBrowserRouter([
         path: "/scheme/scheme3",
         element: (
             <MainPage disableCustomTheme={false}>
-                <Scheme data={data3}/>
+                <Scheme data={data2}/>
             </MainPage>
         ),
     },

@@ -160,7 +160,7 @@ const storage_columns: GridColDef[] = [
 ];
 
 const network_name = 'IEEE33';
-const nt = 1;
+const nt = 24;
 const gen_num = 1;
 const solar_num = 1;
 const wind_num = 1;

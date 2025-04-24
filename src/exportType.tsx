@@ -24,15 +24,15 @@ export interface SchemeType {
         storage_rows: GridRowsProp;
         storage_columns: GridColDef[];
         network_name: string;
-        nt: number;
         gen_num: number;
         solar_num: number;
         wind_num: number;
         storage_num: number;
-        price: number | number[];
-        solar_irradiance: number | number[];
-        wind_speed: number | number[];
-        pd: number[] | number[][];
-        qd: number[] | number[][];
+        price: number[];
+        solar_irradiance: number[];
+        wind_speed: number[];
+        pd: number[][];
+        qd: number[][];
+        ev_demand: number[];
     }
 }

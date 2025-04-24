@@ -160,7 +160,6 @@ const storage_columns: GridColDef[] = [
 ];
 
 const network_name = 'IEEE33';
-const nt = 24;
 const gen_num = 1;
 const solar_num = 1;
 const wind_num = 1;
@@ -174,6 +173,10 @@ const qd0 = [0, 60, 40, 80, 30, 20, 100, 100, 20, 20, 30, 35, 35, 80, 10, 20, 20
 const pd = Array.from({length: 33}, () => [...pd0]);
 const qd = Array.from({length: 33}, () => [...qd0]);
 
+const ev_demand = [
+    6, 7, 5, 1, 2, 2, 2, 4, 3, 7, 12, 8, 3, 10, 6, 11, 9, 8, 9, 14, 6, 8, 9, 9
+];
+
 export const data = {
     bus_rows, bus_columns,
     branch_rows, branch_columns,
@@ -181,9 +184,10 @@ export const data = {
     solar_rows, solar_columns,
     wind_rows, wind_columns,
     storage_rows, storage_columns,
-    network_name, nt,
+    network_name,
     gen_num, solar_num, wind_num, storage_num,
     price,
     solar_irradiance, wind_speed,
     pd, qd,
+    ev_demand
 }

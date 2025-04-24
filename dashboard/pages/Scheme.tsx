@@ -20,10 +20,11 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
         solar_rows, solar_columns,
         wind_rows, wind_columns,
         storage_rows, storage_columns,
-        network_name, nt,
+        network_name,
         gen_num, solar_num, wind_num, storage_num,
         price, solar_irradiance, wind_speed,
-        pd = [], qd = [], // 提供默认值
+        pd = [], qd = [],
+        ev_demand
     } = data;
 
     const [busNum, setBusNum] = React.useState(1);
@@ -112,112 +113,98 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
                 <CardContent>
                     <Typography component="h2" variant="subtitle2" gutterBottom>
-                        日耗电需求
+                        日基础负荷
                     </Typography>
                     <Stack sx={{justifyContent: 'space-between'}}>
                         <Typography variant="caption" sx={{color: 'text.secondary'}}>
-                            时段数量为 {nt}（一天内）
+                            时段数量为 24（一天内）
                         </Typography>
                     </Stack>
-                    {nt == 1 ?
-                        <BarChart
-                            borderRadius={5}
-                            height={250}
-                            xAxis={[{
-                                scaleType: 'band', data: Array.from({length: 33}, (_, i) => `节点${i + 1}`)
-                            }]}
-                            yAxis={[{
-                                label: '有功需求(kWh) / 无功需求(kvar)',
-                            }]}
-                            series={[
-                                {
-                                    color: '#87CEFA',
-                                    data: pd,
-                                },
-                                {
-                                    color: 'purple',
-                                    data: qd,
-                                },
-                            ]}
-                            margin={{left: 50, right: 0, top: 20, bottom: 20}}
-                            grid={{horizontal: true}}
-                            slotProps={{
-                                legend: {
-                                    hidden: true,
-                                },
-                            }}
-                            sx={{
-                                [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                    transform: 'translate(-10px, 0)',
-                                },
-                            }}
-                        />
-                        :
-                        <>
-                            <Typography variant="body1" gutterBottom>
-                                选择节点：
-                            </Typography>
-                            <Select
-                                onChange={(e) => setBusNum(parseInt(e.target.value))}
-                                labelId="bus-select-label"
-                                id="bus-select"
-                                defaultValue={1}
-                            >
-                                {Array.from({length: 33}, (_, i) => (
-                                    <MenuItem key={i + 1} value={(i + 1)}>
-                                        节点{i + 1}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                            <BarChart
-                                borderRadius={5}
-                                height={250}
-                                xAxis={[{
-                                    scaleType: 'band',
-                                    data: Array.from({length: 24}, (_, i) => `${i + 1}时`)
-                                }]}
-                                yAxis={[{
-                                    label: '有功需求(kWh) / 无功需求(kvar)',
-                                }]}
-                                series={[
-                                    {
-                                        color: '#87CEFA',
-                                        data: pd[busNum - 1],
-                                    },
-                                    {
-                                        color: 'purple',
-                                        data: qd[busNum - 1],
-                                    },
-                                ]}
-                                margin={{left: 50, right: 0, top: 20, bottom: 20}}
-                                grid={{horizontal: true}}
-                                slotProps={{
-                                    legend: {
-                                        hidden: true,
-                                    },
-                                }}
-                                sx={{
-                                    [`.${axisClasses.left} .${axisClasses.label}`]: {
-                                        transform: 'translate(-10px, 0)',
-                                    },
-                                }}
-                            />
-                        </>
-                    }
+                    <Box sx={{display: 'flex', marginTop: 1, marginBottom: -2}}>
+                        <Typography variant="body1" sx={{marginTop: 1}}>
+                            选择节点：
+                        </Typography>
+                        <Select
+                            onChange={(e) => setBusNum(parseInt(e.target.value))}
+                            labelId="bus-select-label"
+                            id="bus-select"
+                            defaultValue={1}
+                        >
+                            {Array.from({length: 33}, (_, i) => (
+                                <MenuItem key={i + 1} value={(i + 1)}>
+                                    节点{i + 1}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Box>
+                    <LineChart data={pd[busNum - 1]} xLabel={'时段'} yLabel={'标幺值'} sLabel={'功率标幺值'}/>
+                </CardContent>
+            </Card>
+            <Typography component="h2" variant="h6" gutterBottom>
+                充电需求
+            </Typography>
+            <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
+                <CardContent>
+                    <Stack sx={{justifyContent: 'space-between'}}>
+                        <Typography variant="caption" sx={{color: 'text.secondary'}}>
+                            时段数量为 24（一天内）
+                        </Typography>
+                    </Stack>
+                    <Box sx={{display: 'flex', marginTop: 1, marginBottom: -2}}>
+                        <Typography variant="body1" sx={{marginTop: 1}}>
+                            选择节点：
+                        </Typography>
+                        <Select
+                            onChange={(e) => setBusNum(parseInt(e.target.value))}
+                            labelId="ev-select-label"
+                            id="ev-select"
+                            defaultValue={1}
+                        >
+                            {Array.from({length: 33}, (_, i) => (
+                                <MenuItem key={i + 1} value={(i + 1)}>
+                                    节点{i + 1}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Box>
+                    <BarChart
+                        borderRadius={5}
+                        height={450}
+                        xAxis={[{
+                            label: '时段',
+                            scaleType: 'band',
+                            data: Array.from({length: 24}, (_, i) => `${i + 1}`)
+                        }]}
+                        yAxis={[{
+                            label: '电动汽车数量（辆）',
+                        }]}
+                        series={[
+                            {
+                                color: '#87CEFA',
+                                label: '充电数量',
+                                data: ev_demand,
+                            },
+                        ]}
+                        grid={{horizontal: true}}
+                        slotProps={{
+                            legend: {
+                                hidden: true,
+                            },
+                        }}
+                        sx={{
+                            [`.${axisClasses.left} .${axisClasses.label}`]: {
+                                transform: 'translate(-10px, 0)',
+                            },
+                        }}
+                    />
                 </CardContent>
             </Card>
             <Typography component="h2" variant="h6" gutterBottom>
                 电价数据
             </Typography>
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
-                {nt == 1 ?
-                    (<>时段设置为1，整合电价为 {price} 元/kWh。</>)
-                    :
-                    (<>
-                        时段设置为 24 。
-                        <LineChart data={price}/>
-                    </>)
-                }
+                *时段设置为 24 。
+                <LineChart data={price}/>
             </Card>
             <Typography component="h2" variant="h6" gutterBottom>
                 辐照度和风力信息
@@ -225,26 +212,14 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
             <Grid container spacing={2} columns={12} sx={{marginBottom: 3}}>
                 <Grid size={{xs: 20, md: 6}}>
                     <Card variant="outlined" sx={{width: '100%'}}>
-                        {nt == 1 ?
-                            (<>时段设置为 1，整合辐照度为 {solar_irradiance} 。</>)
-                            :
-                            (<>
-                                时段设置为 24 。
-                                <LineChart data={solar_irradiance}/>
-                            </>)
-                        }
+                        *时段设置为 24 。
+                        <LineChart data={solar_irradiance}/>
                     </Card>
                 </Grid>
                 <Grid size={{xs: 20, md: 6}}>
                     <Card variant="outlined" sx={{width: '100%'}}>
-                        {nt == 1 ?
-                            (<>时段设置为 1，整合风力为 {wind_speed} 。</>)
-                            :
-                            (<>
-                                时段设置为 24 。
-                                <LineChart data={wind_speed}/>
-                            </>)
-                        }
+                        *时段设置为 24 。
+                        <LineChart data={wind_speed}/>
                     </Card>
                 </Grid>
             </Grid>

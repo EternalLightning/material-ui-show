@@ -6,6 +6,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import CalculateIcon from '@mui/icons-material/Calculate';
+import Grid from "@mui/material/Grid";
 
 const cards = [
     {
@@ -42,9 +43,90 @@ export default function DataCalculation() {
             setLoading(false);
             if (selectedCard === 0) {
                 setMessage(
-                    <Typography component={'h2'} variant="h6" gutterBottom>
-                        计算结果
-                    </Typography>
+                    <>
+                        <Typography component={'h2'} variant="h6" gutterBottom>
+                            成本计算结果
+                        </Typography>
+                        <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                            <Typography variant="body1" gutterBottom>
+                                总运行成本为 10000 元，其中投资成本为 5000 元，运行成本为 5000 元。
+                            </Typography>
+                        </Card>
+                        <Typography component={'h2'} variant="h6" gutterBottom>
+                            优化配置结果
+                        </Typography>
+                        <Grid container spacing={2} columns={12}>
+                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
+                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                                    <Typography component="h1" variant="subtitle1" gutterBottom>
+                                        变压器
+                                    </Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        容量: 100MVA<br/>
+                                        数量: 2
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
+                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                                    <Typography component="h1" variant="subtitle1" gutterBottom>
+                                        风光储新能源出力
+                                    </Typography>
+                                    <Grid container spacing={2} columns={3}>
+                                        <Grid size={{xs: 1}}>
+                                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                                风电
+                                            </Typography>
+                                            <Typography variant="body1" gutterBottom>
+                                                容量: 100MVA<br/>
+                                                数量: 2
+                                            </Typography>
+                                        </Grid>
+                                        <Grid size={{xs: 1}}>
+                                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                                光伏
+                                            </Typography>
+                                            <Typography variant="body1" gutterBottom>
+                                                容量: 100MVA<br/>
+                                                数量: 2
+                                            </Typography>
+                                        </Grid>
+                                        <Grid size={{xs: 1}}>
+                                            <Typography component="h1" variant="subtitle1" gutterBottom>
+                                                储能
+                                            </Typography>
+                                            <Typography variant="body1" gutterBottom>
+                                                容量: 100MVA<br/>
+                                                数量: 2
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Card>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
+                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                                    <Typography component="h1" variant="subtitle1" gutterBottom>
+                                        V2G桩
+                                    </Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        容量: 100MVA<br/>
+                                        数量: 2
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
+                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                                    <Typography component="h1" variant="subtitle1" gutterBottom>
+                                        超充站与快充站
+                                    </Typography>
+                                    <Typography variant="body1" gutterBottom>
+                                        容量: 100MVA<br/>
+                                        数量: 2
+                                    </Typography>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </>
                 );
             } else if (selectedCard === 1) {
                 setMessage(

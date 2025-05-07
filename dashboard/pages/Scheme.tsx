@@ -27,7 +27,8 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
         ev_demand
     } = data;
 
-    const [busNum, setBusNum] = React.useState(1);
+    const [powerBusNum, setPowerBusNum] = React.useState(1);
+    const [chargingBusNum, setChargingBusNum] = React.useState(1);
     // @ts-ignore
     return (
         <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
@@ -54,7 +55,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                 出力信息
             </Typography>
             <Grid container spacing={2} columns={20} sx={{marginBottom: 3}}>
-                <Grid size={{xs: 20, md: 20, lg: 20, xl: 12}}>
+                <Grid size={{xs: 20, md: 20, lg: 20, xl: 10}}>
                     <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
                         <CardContent>
                             <Typography component="h1" variant="subtitle1" gutterBottom>
@@ -67,7 +68,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid size={{xs: 20, md: 20, lg: 20, xl: 8}}>
+                <Grid size={{xs: 20, md: 20, lg: 20, xl: 10}}>
                     <Card variant="outlined" sx={{height: '100%', flexGrow: 1}}>
                         <CardContent>
                             <Typography component="h1" variant="subtitle1" gutterBottom>
@@ -125,7 +126,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                             选择节点：
                         </Typography>
                         <Select
-                            onChange={(e) => setBusNum(parseInt(e.target.value))}
+                            onChange={(e) => setPowerBusNum(e.target.value)}
                             labelId="bus-select-label"
                             id="bus-select"
                             defaultValue={1}
@@ -137,7 +138,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                             ))}
                         </Select>
                     </Box>
-                    <LineChart data={pd[busNum - 1]} xLabel={'时段'} yLabel={'标幺值'} sLabel={'功率标幺值'}/>
+                    <LineChart data={pd[powerBusNum - 1]} xLabel={'时段'} yLabel={'标幺值'} sLabel={'功率标幺值'}/>
                 </CardContent>
             </Card>
             <Typography component="h2" variant="h6" gutterBottom>
@@ -155,7 +156,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                             选择节点：
                         </Typography>
                         <Select
-                            onChange={(e) => setBusNum(parseInt(e.target.value))}
+                            onChange={(e) => setChargingBusNum(e.target.value)}
                             labelId="ev-select-label"
                             id="ev-select"
                             defaultValue={1}
@@ -204,7 +205,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
             </Typography>
             <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
                 *时段设置为 24 。
-                <LineChart data={price}/>
+                <LineChart data={price} xLabel={'时段'} yLabel={'电价 (元/kWh)'} sLabel={'电价'}/>
             </Card>
             <Typography component="h2" variant="h6" gutterBottom>
                 辐照度和风力信息
@@ -213,13 +214,13 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                 <Grid size={{xs: 20, md: 6}}>
                     <Card variant="outlined" sx={{width: '100%'}}>
                         *时段设置为 24 。
-                        <LineChart data={solar_irradiance}/>
+                        <LineChart data={solar_irradiance} xLabel={'时段'} yLabel={'辐照度'} sLabel={'辐照度'}/>
                     </Card>
                 </Grid>
                 <Grid size={{xs: 20, md: 6}}>
                     <Card variant="outlined" sx={{width: '100%'}}>
                         *时段设置为 24 。
-                        <LineChart data={wind_speed}/>
+                        <LineChart data={wind_speed} xLabel={'时段'} yLabel={'风力'} sLabel={'风力'}/>
                     </Card>
                 </Grid>
             </Grid>

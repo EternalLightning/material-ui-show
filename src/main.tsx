@@ -14,8 +14,7 @@ import MainGrid from "../dashboard/pages/MainGrid";
 import SystemConfig from "../dashboard/pages/SystemConfig";
 import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
 import Scheme from "../dashboard/pages/Scheme"
-import {data as data2} from "../dashboard/internals/data/schemeData2"
-import {data as data3} from "../dashboard/internals/data/schemeData3"
+import {data as data2} from "../dashboard/data/schemeData2"
 import DataCalculation from "../dashboard/pages/DataCalculation";
 import {
     chartsCustomizations,
@@ -23,7 +22,7 @@ import {
     datePickersCustomizations,
     treeViewCustomizations,
 } from '../dashboard/theme/customizations';
-import Copyright from '../dashboard/internals/components/Copyright'
+import Copyright from '../dashboard/components/Copyright'
 
 
 const xThemeComponents = {

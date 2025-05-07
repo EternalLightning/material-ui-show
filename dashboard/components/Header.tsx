@@ -20,11 +20,7 @@ export default function Header() {
         >
             <NavbarBreadcrumbs/>
             <Stack direction="row" sx={{gap: 1}}>
-                {/*<Search />*/}
                 <GetCurrentDate/>
-                {/*<MenuButton showBadge aria-label="Open notifications">*/}
-                {/*    <NotificationsRoundedIcon/>*/}
-                {/*</MenuButton>*/}
                 <ColorModeIconDropdown/>
             </Stack>
         </Stack>

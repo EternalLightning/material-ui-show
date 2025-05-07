@@ -58,11 +58,16 @@ export function CustomizedLineChart(props: { data: number[], xLabel: string, yLa
             xAxis={[{
                 label: props.xLabel,
                 scaleType: 'band',
-                data: Array.from({length: 24}, (_, i) => `${i + 1}时`)
+                data: Array.from({length: 24}, (_, i) => `${i + 1}`)
             }]}
             yAxis={[{
                 label: props.yLabel,
             }]}
+            slotProps={{
+                legend: {
+                    hidden: true,
+                },
+            }}
             series={[
                 {
                     id: 'irradiance',

@@ -149,46 +149,40 @@ export default function DataCalculation() {
             <Typography component={'h2'} variant="h6" gutterBottom>
                 选择方案
             </Typography>
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    gap: 2,
-                }}
-            >
+            <Grid container spacing={2} columns={12}>
                 {cards.map((card, index) => (
-                    <Card variant={'outlined'} sx={{
-                        width: '100%',
-                        borderRadius: 1,
-                        maxWidth: {sm: '100%', md: '475px'},
-                        padding: 0
-                    }}>
-                        <CardActionArea
-                            onClick={() => setSelectedCard(index)}
-                            data-active={selectedCard === index ? '' : undefined}
-                            sx={{
-                                height: '100%',
-                                '&[data-active]': {
-                                    backgroundColor: 'rgba(0,0,0,0.08)',
-                                    '&:hover': {
-                                        backgroundColor: 'action.selectedHover',
+                    <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
+                        <Card variant={'outlined'} sx={{
+                            width: '100%',
+                            borderRadius: 1,
+                            padding: 0
+                        }}>
+                            <CardActionArea
+                                onClick={() => setSelectedCard(index)}
+                                data-active={selectedCard === index ? '' : undefined}
+                                sx={{
+                                    height: '100%',
+                                    '&[data-active]': {
+                                        backgroundColor: 'rgba(0,0,0,0.08)',
+                                        '&:hover': {
+                                            backgroundColor: 'action.selectedHover',
+                                        },
                                     },
-                                },
-                            }}
-                        >
-                            <CardContent sx={{height: '100%', margin: 2.5}}>
-                                <Typography variant="h5" component="h2" gutterBottom>
-                                    {card.title}
-                                </Typography>
-                                <Typography variant="body1" color="text.secondary">
-                                    {card.description}
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
+                                }}
+                            >
+                                <CardContent sx={{height: '100%', margin: 2.5}}>
+                                    <Typography variant="h5" component="h2" gutterBottom>
+                                        {card.title}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        {card.description}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
                 ))}
-
-            </Box>
+            </Grid>
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',

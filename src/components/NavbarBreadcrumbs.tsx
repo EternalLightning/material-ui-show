@@ -19,7 +19,7 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
 const pathName = new Map<string, string>([
     ['/', '首页'],
     ['/data', '参数输入'],
-    ['/calc', '数据计算'],
+    ['/calc', '优化配置结果'],
     ['/settings', '求解设置'],
     ['/about', '关于'],
     ['/scheme/scheme1', '方案1'],
@@ -37,7 +37,7 @@ export default function NavbarBreadcrumbs() {
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
             {currentPath.startsWith('/scheme/') && (
-                <Typography variant="body1">查看方案</Typography>
+                <Typography variant="body1">方案基础信息</Typography>
             )}
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
                 {pathName.get(currentPath)}

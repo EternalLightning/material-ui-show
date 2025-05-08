@@ -13,7 +13,7 @@ import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
-import {context} from "../../src/exportType";
+import {context} from "../exportType";
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
@@ -55,7 +55,7 @@ export default function MenuContent() {
             <List dense>
                 {mainListItems.map((item, index) => (
                     <React.Fragment key={index}>
-                        <ListItem key={index} disablePadding sx={{display: 'block'}}>
+                        <ListItem key={index} disablePadding sx={{display: 'block', paddingBottom: '2px'}}>
                             <ListItemButton
                                 selected={item.path === useLocation().pathname || (item.subItems && item.subItems.some(subItem => subItem.path === useLocation().pathname))}
                                 onClick={() => handleItemClick(item.path, item.subItems)}
@@ -68,7 +68,7 @@ export default function MenuContent() {
                         <Collapse in={openSubItems === item.path} timeout="auto">
                             <List component="div" disablePadding>
                                 {item.subItems && item.subItems.map((subItem, subIndex) => (
-                                    <ListItem key={subIndex} disablePadding sx={{pl: 4}}>
+                                    <ListItem key={subIndex} disablePadding sx={{pl: 4, paddingBottom: '2px'}}>
                                         <ListItemButton
                                             selected={subItem.path === useLocation().pathname}
                                             onClick={() => {navigate(subItem.path);}}
@@ -84,7 +84,7 @@ export default function MenuContent() {
             </List>
             <List dense>
                 {secondaryListItems.map((item, index) => (
-                    <ListItem key={index} disablePadding sx={{display: 'block'}}>
+                    <ListItem key={index} disablePadding sx={{display: 'block', paddingBottom: '2px'}}>
                         <ListItemButton
                             selected={item.path === useLocation().pathname}
                             onClick={() => {navigate(item.path);}}

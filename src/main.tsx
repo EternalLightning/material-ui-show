@@ -5,31 +5,27 @@ import {context} from "./exportType";
 import AppTheme from "../shared-theme/AppTheme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
-import SideMenu from "../dashboard/components/SideMenu";
-import AppNavbar from "../dashboard/components/AppNavbar";
+import SideMenu from "./components/SideMenu";
+import AppNavbar from "./components/AppNavbar";
 import {alpha} from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
-import Header from "../dashboard/components/Header";
-import MainGrid from "../dashboard/pages/MainGrid";
-import SystemConfig from "../dashboard/pages/SystemConfig";
-import ChargeStationConfig from "../dashboard/pages/ChargeStationConfig";
-import Scheme from "../dashboard/pages/Scheme"
-import {data as data2} from "../dashboard/data/schemeData2"
-import DataCalculation from "../dashboard/pages/DataCalculation";
+import Header from "./components/Header";
+import MainGrid from "./pages/MainGrid";
+import SystemConfig from "./pages/SystemConfig";
+import ChargeStationConfig from "./pages/ChargeStationConfig";
+import Scheme from "./pages/Scheme"
+import {data as data2} from "./data/schemeData2"
+import DataCalculation from "./pages/DataCalculation";
 import {
     chartsCustomizations,
     dataGridCustomizations,
-    datePickersCustomizations,
-    treeViewCustomizations,
-} from '../dashboard/theme/customizations';
-import Copyright from '../dashboard/components/Copyright'
+} from './customizations';
+import Copyright from './components/Copyright'
 
 
 const xThemeComponents = {
     ...chartsCustomizations,
     ...dataGridCustomizations,
-    ...datePickersCustomizations,
-    ...treeViewCustomizations,
 };
 
 
@@ -37,18 +33,21 @@ function MainPage(props: { disableCustomTheme?: boolean, children: any}) {
     return (
         <AppTheme {...props} themeComponents={xThemeComponents}>
             <CssBaseline enableColorScheme/>
-            <Box sx={{display: 'flex', minHeight: 'calc(100vh - 6em)'}}>
+            <Box sx={{display: 'flex'}}>
                 <SideMenu/>
                 <AppNavbar/>
                 {/* Main content */}
                 <Box
                     component="main"
+                    flexGrow={1}
                     sx={(theme) => ({
-                        flexGrow: 1,
                         backgroundColor: theme.vars
                             ? `rgba(${theme.vars.palette.background.defaultChannel} / 1)`
                             : alpha(theme.palette.background.default, 1),
                         overflow: 'auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minHeight: '100vh',
                     })}
                 >
                     <Stack
@@ -63,10 +62,11 @@ function MainPage(props: { disableCustomTheme?: boolean, children: any}) {
                         <Header/>
                         {props.children}
                     </Stack>
+                    <Box flexGrow={1}/>
+                    <Copyright sx={{my: 4}}/>
                 </Box>
             </Box>
-            <Box flexGrow={1}/>
-            <Copyright sx={{my: 4}}/>
+
         </AppTheme>
     );
 }

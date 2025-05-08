@@ -37,13 +37,12 @@ export default function SideMenu() {
                     p: 1.5,
                 }}
             >
-                {/*<SelectContent />*/}
-            <CardMedia
-              component="img"
-              height="100%"
-              image="/logo.png"
-              alt="上海交通大学"
-            />
+                <CardMedia
+                    component="img"
+                    height="100%"
+                    image="/logo.png"
+                    alt="上海交通大学"
+                />
             </Box>
             <Divider/>
             <Box
@@ -56,32 +55,6 @@ export default function SideMenu() {
             >
                 <MenuContent/>
             </Box>
-            {/*<Stack*/}
-            {/*  direction="row"*/}
-            {/*  sx={{*/}
-            {/*    p: 2,*/}
-            {/*    gap: 1,*/}
-            {/*    alignItems: 'center',*/}
-            {/*    borderTop: '1px solid',*/}
-            {/*    borderColor: 'divider',*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  <Avatar*/}
-            {/*    sizes="small"*/}
-            {/*    alt="Riley Carter"*/}
-            {/*    src="/static/images/avatar/7.jpg"*/}
-            {/*    sx={{ width: 36, height: 36 }}*/}
-            {/*  />*/}
-            {/*  <Box sx={{ mr: 'auto' }}>*/}
-            {/*    <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: '16px' }}>*/}
-            {/*      Riley Carter*/}
-            {/*    </Typography>*/}
-            {/*    <Typography variant="caption" sx={{ color: 'text.secondary' }}>*/}
-            {/*      riley@email.com*/}
-            {/*    </Typography>*/}
-            {/*  </Box>*/}
-            {/*  <OptionsMenu />*/}
-            {/*</Stack>*/}
         </Drawer>
     );
 }

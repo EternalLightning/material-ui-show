@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import {BarChart} from "@mui/x-charts/BarChart";
 import {axisClasses} from '@mui/x-charts/ChartsAxis';
-import {SchemeType} from '../../src/exportType'
+import {SchemeType} from '../exportType'
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -118,7 +118,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                     </Typography>
                     <Stack sx={{justifyContent: 'space-between'}}>
                         <Typography variant="caption" sx={{color: 'text.secondary'}}>
-                            时段数量为 24（一天内）
+                            *时段数量为 24（一天内）
                         </Typography>
                     </Stack>
                     <Box sx={{display: 'flex', marginTop: 1, marginBottom: -2}}>
@@ -148,7 +148,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                 <CardContent>
                     <Stack sx={{justifyContent: 'space-between'}}>
                         <Typography variant="caption" sx={{color: 'text.secondary'}}>
-                            时段数量为 24（一天内）
+                            *时段数量为 24（一天内）
                         </Typography>
                     </Stack>
                     <Box sx={{display: 'flex', marginTop: 1, marginBottom: -2}}>

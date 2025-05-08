@@ -20,9 +20,9 @@ export default function ColorModeSelect(props: SelectProps) {
       }}
       {...props}
     >
-      <MenuItem value="system">System</MenuItem>
-      <MenuItem value="light">Light</MenuItem>
-      <MenuItem value="dark">Dark</MenuItem>
+      <MenuItem value="system">跟随系统</MenuItem>
+      <MenuItem value="light">亮色主题</MenuItem>
+      <MenuItem value="dark">深色主题</MenuItem>
     </Select>
   );
 }

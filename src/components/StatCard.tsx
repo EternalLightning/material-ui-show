@@ -84,7 +84,6 @@ export default function StatCard({
         <Typography component="h2" variant="subtitle2" gutterBottom>
           {title}
         </Typography>
-
       </CardContent>
     </Card>
   );

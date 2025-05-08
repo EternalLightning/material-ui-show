@@ -1,7 +1,6 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import Typography from '@mui/material/Typography';
-import Chip from "@mui/material/Chip";
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import Box from "@mui/material/Box";
 

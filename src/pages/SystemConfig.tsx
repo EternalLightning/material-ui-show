@@ -11,13 +11,6 @@ import {Box, InputLabel} from "@mui/material";
 import Card from "@mui/material/Card";
 
 export default function SystemConfig() {
-    const sections = [
-        '基准值设置',
-        '优化器设置',
-        '时段数量设置',
-        '结果输出设置',
-    ];
-
     return (
         <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
             <Typography variant="h6" gutterBottom>

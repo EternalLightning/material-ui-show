@@ -7,28 +7,30 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import CalculateIcon from '@mui/icons-material/Calculate';
 import Grid from "@mui/material/Grid";
+import {cards} from '../data/cards';
+import CircularProgress from "@mui/material/CircularProgress";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-const cards = [
-    {
-        id: 1,
-        title: '方案1',
-        description:
-            <>
-                网络名称: IEEE33<br/>
-                支路数量: 32<br/>
-                充电站数量: 1
-            </>,
-    },
-    {
-        id: 2,
-        title: '方案2',
-        description: '方案2描述',
-    },
-    {
-        id: 3,
-        title: '方案3',
-        description: '方案3描述',
-    },
+function createData(
+    head: string,
+    wind: number,
+    pv: number,
+    ess: number,
+    v2g: number,
+    fastCharge: number,
+) {
+    return {head, wind, pv, ess, v2g, fastCharge};
+}
+
+const rows = [
+    createData('容量 (MVA)', 100, 100, 100, 100, 100),
+    createData('数量', 2, 2, 2, 2, 2),
 ];
 
 export default function DataCalculation() {
@@ -55,77 +57,44 @@ export default function DataCalculation() {
                         <Typography component={'h2'} variant="h6" gutterBottom>
                             优化配置结果
                         </Typography>
-                        <Grid container spacing={2} columns={12}>
-                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
-                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
-                                    <Typography component="h1" variant="subtitle1" gutterBottom>
-                                        变压器
-                                    </Typography>
-                                    <Typography variant="body1" gutterBottom>
-                                        容量: 100MVA<br/>
-                                        数量: 2
-                                    </Typography>
-                                </Card>
-                            </Grid>
-                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
-                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
-                                    <Typography component="h1" variant="subtitle1" gutterBottom>
-                                        风光储新能源出力
-                                    </Typography>
-                                    <Grid container spacing={2} columns={3}>
-                                        <Grid size={{xs: 1}}>
-                                            <Typography component="h1" variant="subtitle1" gutterBottom>
-                                                风电
-                                            </Typography>
-                                            <Typography variant="body1" gutterBottom>
-                                                容量: 100MVA<br/>
-                                                数量: 2
-                                            </Typography>
-                                        </Grid>
-                                        <Grid size={{xs: 1}}>
-                                            <Typography component="h1" variant="subtitle1" gutterBottom>
-                                                光伏
-                                            </Typography>
-                                            <Typography variant="body1" gutterBottom>
-                                                容量: 100MVA<br/>
-                                                数量: 2
-                                            </Typography>
-                                        </Grid>
-                                        <Grid size={{xs: 1}}>
-                                            <Typography component="h1" variant="subtitle1" gutterBottom>
-                                                储能
-                                            </Typography>
-                                            <Typography variant="body1" gutterBottom>
-                                                容量: 100MVA<br/>
-                                                数量: 2
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Card>
-                            </Grid>
-                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
-                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
-                                    <Typography component="h1" variant="subtitle1" gutterBottom>
-                                        V2G桩
-                                    </Typography>
-                                    <Typography variant="body1" gutterBottom>
-                                        容量: 100MVA<br/>
-                                        数量: 2
-                                    </Typography>
-                                </Card>
-                            </Grid>
-                            <Grid size={{xs: 12, md: 6, lg: 6, xl: 3}}>
-                                <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
-                                    <Typography component="h1" variant="subtitle1" gutterBottom>
-                                        超充站与快充站
-                                    </Typography>
-                                    <Typography variant="body1" gutterBottom>
-                                        容量: 100MVA<br/>
-                                        数量: 2
-                                    </Typography>
-                                </Card>
-                            </Grid>
-                        </Grid>
+                        <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
+                            <TableContainer component={Paper}>
+                                <Table sx={{
+                                    minWidth: 650,
+                                    '& .MuiTableCell-root': {
+                                        borderColor: 'rgb(209,206,206)', // 分割线为纯黑色
+                                    }
+                                }} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell/>
+                                            <TableCell align="center">风电</TableCell>
+                                            <TableCell align="center">光伏</TableCell>
+                                            <TableCell align="center">储能</TableCell>
+                                            <TableCell align="center">V2G 桩</TableCell>
+                                            <TableCell align="center">快充桩</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {rows.map((row) => (
+                                            <TableRow
+                                                key={row.head}
+                                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    {row.head}
+                                                </TableCell>
+                                                <TableCell align="center">{row.wind}</TableCell>
+                                                <TableCell align="center">{row.pv}</TableCell>
+                                                <TableCell align="center">{row.ess}</TableCell>
+                                                <TableCell align="center">{row.v2g}</TableCell>
+                                                <TableCell align="center">{row.fastCharge}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Card>
                     </>
                 );
             } else if (selectedCard === 1) {
@@ -145,7 +114,7 @@ export default function DataCalculation() {
     };
 
     return (
-        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
+        <Box sx={{width: '80%', maxWidth: {sm: '100%', md: '1900px'}}}>
             <Typography component={'h2'} variant="h6" gutterBottom>
                 选择方案
             </Typography>
@@ -196,7 +165,8 @@ export default function DataCalculation() {
                     onClick={handleClick}
                     disabled={loading}
                 >
-                    {loading ? '计算中...' : '开始计算'}
+                    {loading ? '计算中' : '开始计算'}
+                    {loading && <CircularProgress size={20} sx={{ml: 1}}/>}
                 </Button>
             </Box>
             {message && <p>{message}</p>}

@@ -18,7 +18,7 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
 
 const pathName = new Map<string, string>([
     ['/', '首页'],
-    ['/data', '参数输入'],
+    ['/data', '方案管理'],
     ['/calc', '优化配置结果'],
     ['/settings', '求解设置'],
     ['/about', '关于'],

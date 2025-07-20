@@ -181,7 +181,7 @@ const Scheme: React.FC<SchemeType> = ({data}) => {
                         }]}
                         series={[
                             {
-                                color: '#87CEFA',
+                                color: 'rgba(0,140,140,0.86)',
                                 label: '充电数量',
                                 data: ev_demand,
                             },

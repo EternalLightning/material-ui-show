@@ -17,7 +17,7 @@ import {context} from "../exportType";
 
 const mainListItems = [
     {text: '首页', icon: <HomeRoundedIcon/>, path: '/'},
-    {text: '参数输入', icon: <InputIcon/>, path: '/data'},
+    {text: '方案管理', icon: <InputIcon/>, path: '/data'},
     {
         text: '方案基础信息',
         icon: <AnalyticsRoundedIcon/>,

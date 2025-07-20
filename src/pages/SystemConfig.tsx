@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 
 export default function SystemConfig() {
     return (
-        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
+        <Box sx={{width: '80%', maxWidth: {sm: '100%', md: '1900px'}}}>
             <Typography variant="h6" gutterBottom>
                 基准值设置
             </Typography>

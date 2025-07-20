@@ -72,7 +72,7 @@ export function CustomizedLineChart(props: { data: number[], xLabel: string, yLa
                 {
                     id: 'irradiance',
                     label: props.sLabel,
-                    color: '#87CEFA',
+                    color: '#009898',
                     data: props.data,
                     stack: 'total',
                     area: true,
@@ -94,7 +94,7 @@ export function CustomizedLineChart(props: { data: number[], xLabel: string, yLa
         >
             <defs>
                 <linearGradient id="myGradient" gradientTransform="rotate(90)">
-                    <stop offset="10%" stopColor="#87CEFA"/>
+                    <stop offset="10%" stopColor="#009898"/>
                     <stop offset="90%" stopColor="white"/>
                 </linearGradient>
             </defs>

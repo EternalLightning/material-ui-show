@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState, useCallback, useRef} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import {CardActionArea} from "@mui/material";
@@ -27,9 +27,11 @@ const TIMEOUT_MS = 8000; // 请求超时阈值，毫秒
 
 type SchemeCardsProps = {
     refreshKey?: number;
+    // allowDelete 控制是否在卡片被选中时显示删除按钮（首页等场景可设为 false）
+    allowDelete?: boolean;
 }
 
-const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey}) => {
+const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true}) => {
     // cards === null 表示尚未成功获取；loading 控制是否显示加载中
     const [cards, setCards] = useState<RemoteCard[] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -240,7 +242,7 @@ const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey}) => {
                             </CardActionArea>
 
                             {/* 选中时显示删除按钮，风格与页面其它按钮保持一致 */}
-                            {selected && selected.title === card.title && selected.filename === card.filename && (
+                            {allowDelete && selected && selected.title === card.title && selected.filename === card.filename && (
                                 <Fade in={true} timeout={240}>
                                     <Box sx={{position: 'absolute', right: 12, bottom: 12}}>
                                         <Button

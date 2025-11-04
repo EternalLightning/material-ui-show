@@ -77,151 +77,49 @@ export default function ChargeStationConfig() {
             });
 
             let data: any = null;
-            try { data = await res.json(); } catch (e) { /* ignore parse error */ }
+            try {
+                data = await res.json();
+            } catch (e) { /* ignore parse error */
+            }
 
-            if (!res.ok) {
-                const msg = data?.message || `上传失败，状态码：${res.status}`;
-                setBtnState('error');
-                setAlertDialogTitle('错误');
-                setAlertDialogContent(msg);
+            if (data?.success) {
+                setBtnState('success');
+                setAlertDialogTitle('成功');
+                setAlertDialogContent(data?.message || '上传成功');
                 setAlertDialogOpen(true);
+                console.log('后端返回：', data);
+                // 后端统一返回成功后，触发 SchemeCards 刷新
+                setRefreshKey(prev => prev + 1);
+                // 通知全局菜单刷新（用于其他打开的窗口/组件）
+                try {
+                    window.dispatchEvent(new Event('plans-updated'));
+                } catch (e) { /* ignore */
+                }
             } else {
-                if (data?.success) {
-                    setBtnState('success');
-                    setAlertDialogTitle('成功');
-                    setAlertDialogContent(data?.message || '上传成功');
-                    setAlertDialogOpen(true);
-                    console.log('后端返回：', data);
-                    // 后端统一返回成功后，触发 SchemeCards 刷新
-                    setRefreshKey(prev => prev + 1);
-                } else {
-                    setBtnState('error');
-                    // 如果是文件检查不通过，且包含 detail，则把 detail 一并显示（保持换行）
-                    if (data?.message === '文件检查不通过' && data?.detail) {
-                        setAlertDialogTitle('文件检查未通过');
-                        const detailText = String(data?.detail);
-
-                        // 解析 detailText 中可能包含的一条或多条 JSON（MATLAB 风格）。
-                        const parseDetailText = (text: string) => {
-                            // 提取所有最外层的花括号块
-                            const blocks: string[] = [];
-                            let depth = 0;
-                            let start = -1;
-                            for (let i = 0; i < text.length; i++) {
-                                const ch = text[i];
-                                if (ch === '{') {
-                                    if (depth === 0) start = i;
-                                    depth++;
-                                } else if (ch === '}') {
-                                    depth--;
-                                    if (depth === 0 && start >= 0) {
-                                        blocks.push(text.slice(start, i + 1));
-                                        start = -1;
-                                    }
-                                }
-                            }
-
-                            // 如果没有找到花括号块，把整个 text 作为一条原始消息
-                            if (blocks.length === 0) return { items: null as any | null, raw: text };
-
-                            const items: any[] = [];
-                            for (const blk of blocks) {
-                                let s = blk;
-                                // 将 matlab.double(...) 移除函数名，仅保留括号内内容
-                                const matlabRegex = /matlab\.double\(/g;
-                                let match: RegExpExecArray | null;
-                                while ((match = matlabRegex.exec(s)) !== null) {
-                                    const idx = match.index;
-                                    // 找到从 idx 后第一个 '(' 的位置
-                                    const parenStart = s.indexOf('(', idx);
-                                    if (parenStart === -1) break;
-                                    // 寻找匹配的右括号
-                                    let cnt = 0;
-                                    let end = -1;
-                                    for (let k = parenStart; k < s.length; k++) {
-                                        if (s[k] === '(') cnt++;
-                                        else if (s[k] === ')') {
-                                            cnt--;
-                                            if (cnt === 0) { end = k; break; }
-                                        }
-                                    }
-                                    if (end === -1) break;
-                                    // replace 'matlab.double(... )' with inner content
-                                    const inner = s.slice(parenStart + 1, end);
-                                    s = s.slice(0, match.index) + inner + s.slice(end + 1);
-                                    // reset regex position
-                                    matlabRegex.lastIndex = match.index + inner.length;
-                                }
-
-                                // 把单引号改为双引号（MATLAB 风格使用单引号）
-                                let jsonLike = s.replace(/'/g, '"');
-
-                                // 清理可能的 MATLAB 的数组标识（保持 JSON 中的数字格式）
-                                // 然后尝试解析
-                                try {
-                                    const obj = JSON.parse(jsonLike);
-                                    items.push(obj);
-                                } catch (ex) {
-                                    // 解析失败，跳过并回退到原始字符串
-                                    return { items: null as any | null, raw: text };
-                                }
-                            }
-
-                            return { items, raw: text };
-                        };
-
-                        const parsed = parseDetailText(detailText);
-                        if (parsed.items && Array.isArray(parsed.items)) {
-                            // 构建可读的 React 节点
-                            const nodes = (
-                                <div>
-                                    <div>{data?.message}</div>
-                                    <div style={{marginTop: 8}}>
-                                        {parsed.items.map((it: any, idx: number) => (
-                                            <Box key={idx} sx={{mb: 1, p: 1, borderRadius: 1, bgcolor: '#f7f7f7' }}>
-                                                <Typography variant="body2" sx={{fontWeight: 600}}>条目 {idx + 1}</Typography>
-                                                <Typography variant="body2">消息: {String(it.message ?? '')}</Typography>
-                                                {it.fix !== undefined && <Typography variant="body2">fix: {String(it.fix)}</Typography>}
-                                                {it.line !== undefined && <Typography variant="body2">line: {String(it.line)}</Typography>}
-                                                {it.column !== undefined && <Typography variant="body2" sx={{whiteSpace: 'pre-wrap', fontFamily: 'monospace'}}>
-                                                    column: {typeof it.column === 'object' ? JSON.stringify(it.column) : String(it.column)}
-                                                </Typography>}
-                                            </Box>
-                                        ))}
-                                    </div>
-                                </div>
-                            );
-                            setAlertDialogContent(nodes);
-                            setAlertDialogCopyText(parsed.raw);
-                            setAlertDialogOpen(true);
-                        } else {
-                            // 回退：显示原始 detail 文本
-                            setAlertDialogContent(
-                                <div>
-                                    <div>{data?.message}</div>
-                                    <div style={{whiteSpace: 'pre-wrap', marginTop: 8, fontFamily: 'monospace', fontSize: 13, maxHeight: 300, overflow: 'auto'}}>{detailText}</div>
-                                </div>
-                            );
-                            setAlertDialogCopyText(detailText);
-                            setAlertDialogOpen(true);
-                        }
-                    } else {
-                         setAlertDialogTitle('错误');
-                         setAlertDialogContent(data?.message || '上传未成功');
-                         setAlertDialogOpen(true);
-                     }
-                 }
-              }
-          } catch (e) {
-              const msg = (e as Error)?.message || String(e);
-              setBtnState('error');
-              setAlertDialogTitle('错误');
-              setAlertDialogContent('网络或请求错误：' + msg);
-              setAlertDialogOpen(true);
-          } finally {
-              setTimeout(() => setBtnState('idle'), 2000);
-          }
-     };
+                setBtnState('error');
+                // 如果是文件检查不通过，且包含 detail，则把 detail 一并显示（保持换行）
+                // 构造可以滚动展示 detail 的内容，并把 detail 原文作为复制文本
+                const detailText = data?.detail;
+                setAlertDialogTitle('文件检查不通过');
+                setAlertDialogContent(
+                    <Box sx={{maxHeight: 300, overflow: 'auto', whiteSpace: 'pre-wrap'}}>
+                        <Box sx={{mb: 1, fontWeight: 'bold'}}>{data?.message}</Box>
+                        <Box sx={{fontFamily: 'monospace', fontSize: 13}}>{detailText}</Box>
+                    </Box>
+                );
+                setAlertDialogCopyText(detailText);
+                setAlertDialogOpen(true);
+            }
+        } catch (e) {
+            const msg = (e as Error)?.message || String(e);
+            setBtnState('error');
+            setAlertDialogTitle('错误');
+            setAlertDialogContent('网络或请求错误：' + msg);
+            setAlertDialogOpen(true);
+        } finally {
+            setTimeout(() => setBtnState('idle'), 2000);
+        }
+    };
 
     const handleRemove = () => {
         setSelectedFile(null);
@@ -289,15 +187,18 @@ export default function ChargeStationConfig() {
             <Typography variant="h6" gutterBottom>
                 管理方案
             </Typography>
-            <SchemeCards refreshKey={refreshKey} />
+            <SchemeCards refreshKey={refreshKey}/>
             {/* 全局替代 alert 的对话框 */}
             <AlertDialog
                 open={alertDialogOpen}
                 title={alertDialogTitle}
                 content={alertDialogContent}
                 copyText={alertDialogCopyText ?? null}
-                onClose={() => { setAlertDialogOpen(false); setAlertDialogCopyText(null); }}
+                onClose={() => {
+                    setAlertDialogOpen(false);
+                    setAlertDialogCopyText(null);
+                }}
             />
         </Box>
- );
- };
+    );
+};

@@ -15,6 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import AlertDialog from './AlertDialog';
+import ErrorRetryPanel from './ErrorRetryPanel';
 
 
 type RemoteCard = {
@@ -163,6 +164,10 @@ const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true
                 setAlertDialogContent(data?.message || `已删除 ${data?.deleted ?? 0} 条`);
                 setAlertDialogOpen(true);
                 await loadPlans();
+                try {
+                    window.dispatchEvent(new Event('plans-updated'));
+                } catch (e) { /* ignore */
+                }
                 setSelected(null);
             }
         } catch (e: any) {
@@ -204,16 +209,8 @@ const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true
 
     if (error) {
         return (
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 200,
-                gap: 2
-            }}>
-                <Typography color="error">{error}</Typography>
-                <Button variant="contained" onClick={() => loadPlans()}>重试</Button>
+            <Box sx={{p: 2}}>
+                <ErrorRetryPanel message={error} onRetry={() => loadPlans()}/>
             </Box>
         );
     }

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -40,19 +39,24 @@ const AlertDialog: React.FC<AlertDialogProps> = ({ open, title, content, onClose
     >
       {title && <DialogTitle id="alert-dialog-title">{title}</DialogTitle>}
       <DialogContent>
-        <DialogContentText>
+          {/* 支持传入任意 ReactNode（如包含可滚动 detail 的 Box） */}
           {content}
-        </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'flex-end', pr: 2, pb: 2 }}>
         <Stack direction="row" spacing={1} alignItems="center">
           {copyText ? (
             <Button
               onClick={handleCopy}
-              variant="outlined"
-              color="inherit"
+              variant="contained"
+              color="info"
               startIcon={<ContentCopyIcon />}
-              size="small"
+              sx={{
+                  minWidth: 120,
+                  color: 'common.white',
+                  '&:hover': {
+                      backgroundColor: 'info.dark'
+                  }
+              }}
             >
               {copied ? '已复制' : '复制'}
             </Button>

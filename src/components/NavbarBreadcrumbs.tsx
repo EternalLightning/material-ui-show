@@ -22,13 +22,74 @@ const pathName = new Map<string, string>([
     ['/calc', '优化配置结果'],
     ['/settings', '求解设置'],
     ['/about', '关于'],
-    ['/scheme/scheme1', '方案1'],
-    ['/scheme/scheme2', '方案2'],
-    ['/scheme/scheme3', '方案3'],
 ]);
+
+async function resolveSchemeNameFromBackend(pathname: string): Promise<string | null> {
+    // pathname 可能为 /scheme/<encodedId>
+    const seg = pathname.split('/').filter(Boolean).pop();
+    if (!seg) return null;
+    const decoded = decodeURIComponent(seg);
+
+    // 先尝试本地缓存
+    try {
+        const raw = localStorage.getItem('schemeSubItemsCache');
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.items)) {
+                const found = parsed.items.find((it: any) => String(it.id) === decoded || String(it.path).endsWith(encodeURIComponent(decoded)));
+                if (found) return found.text ?? decoded;
+            }
+        }
+    } catch (e) { /* ignore */
+    }
+
+    // 请求后端 /plans
+    try {
+        const base = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BACKEND_URL) ? String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, '') : '';
+        if (!base) return decoded;
+        const res = await fetch(base + '/plans');
+        if (!res.ok) return decoded;
+        const j = await res.json();
+        let plans: any[] = [];
+        if (j && typeof j === 'object' && 'success' in j && Array.isArray(j.plans)) plans = j.plans;
+        else if (Array.isArray(j)) plans = j;
+        else if (j && Array.isArray(j?.data)) plans = j.data;
+
+        const found = plans.find((p: any) => {
+            const id = p.filename ?? p.name ?? p;
+            return String(id) === decoded;
+        });
+        if (found) return found.name ?? found.filename ?? decoded;
+    } catch (e) { /* ignore */
+    }
+
+    return decoded;
+}
 
 export default function NavbarBreadcrumbs() {
     const currentPath = useLocation().pathname;
+    const [schemeLabel, setSchemeLabel] = React.useState<string | null>(null);
+
+    React.useEffect(() => {
+        let mounted = true;
+
+        async function resolve() {
+            if (!currentPath.startsWith('/scheme/')) {
+                setSchemeLabel(null);
+                return;
+            }
+            const seg = currentPath.split('/').filter(Boolean).pop() ?? '';
+            // optimistic show decoded seg while resolving
+            setSchemeLabel(decodeURIComponent(seg));
+            const resolved = await resolveSchemeNameFromBackend(currentPath);
+            if (mounted) setSchemeLabel(resolved ?? decodeURIComponent(seg));
+        }
+
+        resolve();
+        return () => {
+            mounted = false;
+        }
+    }, [currentPath]);
 
     return (
         <StyledBreadcrumbs
@@ -40,7 +101,7 @@ export default function NavbarBreadcrumbs() {
                 <Typography variant="body1">方案基础信息</Typography>
             )}
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
-                {pathName.get(currentPath)}
+                {currentPath.startsWith('/scheme/') ? (schemeLabel ?? '方案') : (pathName.get(currentPath) ?? '')}
             </Typography>
         </StyledBreadcrumbs>
     );

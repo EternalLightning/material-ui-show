@@ -15,6 +15,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import ErrorRetryPanel from '../components/ErrorRetryPanel';
 
 function createData(
     head: string,
@@ -190,16 +191,8 @@ export default function DataCalculation() {
                     <CircularProgress/>
                 </Box>
             ) : plansError ? (
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: 120,
-                    gap: 2
-                }}>
-                    <Typography color="error">{plansError}</Typography>
-                    <Button variant="contained" onClick={() => loadPlans()}>重试</Button>
+                <Box sx={{p: 2}}>
+                    <ErrorRetryPanel message={plansError} onRetry={() => loadPlans()}/>
                 </Box>
             ) : (
                 <Grid container spacing={2} columns={12}>

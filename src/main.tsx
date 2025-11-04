@@ -14,12 +14,8 @@ import MainGrid from "./pages/MainGrid";
 import SystemConfig from "./pages/SystemConfig";
 import ChargeStationConfig from "./pages/ChargeStationConfig";
 import Scheme from "./pages/Scheme"
-import {data as data2} from "./data/schemeData2"
 import DataCalculation from "./pages/DataCalculation";
-import {
-    chartsCustomizations,
-    dataGridCustomizations,
-} from './customizations';
+import {chartsCustomizations, dataGridCustomizations,} from './customizations';
 import Copyright from './components/Copyright'
 
 
@@ -123,26 +119,10 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: "/scheme/scheme1",
+        path: "/scheme/:name",
         element: (
             <MainPage disableCustomTheme={false}>
-                <Scheme data={data2}/>
-            </MainPage>
-        ),
-    },
-    {
-        path: "/scheme/scheme2",
-        element: (
-            <MainPage disableCustomTheme={false}>
-                <Scheme data={data2}/>
-            </MainPage>
-        ),
-    },
-    {
-        path: "/scheme/scheme3",
-        element: (
-            <MainPage disableCustomTheme={false}>
-                <Scheme data={data2}/>
+                <Scheme/>
             </MainPage>
         ),
     },

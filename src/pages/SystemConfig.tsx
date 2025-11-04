@@ -12,6 +12,7 @@ import Card from "@mui/material/Card";
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import AlertDialog from '../components/AlertDialog';
+import ErrorRetryPanel from '../components/ErrorRetryPanel';
 
 export default function SystemConfig() {
     // 配置状态与加载/保存状态
@@ -286,7 +287,7 @@ export default function SystemConfig() {
                 <Box>
                     {loading && <Typography variant="body2">正在从后端加载配置... <CircularProgress size={14}
                                                                                                     sx={{ml: 1}}/></Typography>}
-                    {error && <Typography color="error">{error}</Typography>}
+                    {error && <ErrorRetryPanel message={error} row onRetry={loadConfig}/>}
                 </Box>
                 <Box>
                     <Button
@@ -306,3 +307,4 @@ export default function SystemConfig() {
         </Box>
     )
 }
+

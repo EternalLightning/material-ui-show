@@ -139,8 +139,9 @@ export default function MenuContent() {
         };
     }, [loadPlans]);
 
-    const handleItemClick = (path: string, subItems?: any[]) => {
-        if (subItems && subItems.length > 0) {
+    const handleItemClick = (path: string, itemSubItems: any | undefined) => {
+        // If the item explicitly declares a subItems property (even if empty) treat it as expandable
+        if (itemSubItems !== undefined) {
             setOpenSubItems!(openSubItems === path ? null : path); // 切换子列表的展开状态
         } else {
             navigate(path); // 如果没有子列表，直接导航
@@ -160,7 +161,7 @@ export default function MenuContent() {
                             <ListItem key={index} disablePadding sx={{display: 'block', paddingBottom: '2px'}}>
                                 <ListItemButton
                                     selected={item.path === pathname || (Array.isArray(subList) && subList.some(subItem => subItem.path === pathname))}
-                                    onClick={() => handleItemClick(item.path, subList)}
+                                    onClick={() => handleItemClick(item.path, item.subItems)}
                                 >
                                     <ListItemIcon>{item.icon}</ListItemIcon>
                                     <ListItemText primary={item.text}/>

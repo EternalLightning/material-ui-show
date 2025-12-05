@@ -37,7 +37,7 @@ export default function MainGrid() {
 
           {/* 概览区 */}
           <Grid container spacing={2} sx={{mb: 3, alignItems: 'stretch'}}>
-              <Grid size={{xs: 12, md: 8}}>
+              <Grid size={{xs: 12, md: 7}}>
                   <Card variant="outlined" sx={{height: '100%'}}>
                       <CardContent>
                           <Typography variant="h6" gutterBottom>项目简介</Typography>
@@ -75,7 +75,7 @@ export default function MainGrid() {
                   </Card>
               </Grid>
 
-              <Grid size={{xs: 12, md: 2}}>
+              <Grid size={{xs: 12, md: 3}}>
                   <Card variant="outlined" sx={{height: '100%'}}>
                       <CardContent>
                           <Typography variant="h6" gutterBottom>外部链接</Typography>
@@ -91,7 +91,7 @@ export default function MainGrid() {
                                       startIcon={<ArticleIcon/>}>前往作者博客</Button>
                               <Button component="a" href="https://github.com/EternalLightning" target="_blank"
                                       rel="noopener noreferrer" variant="outlined"
-                                      startIcon={<GitHubIcon/>}>前往作者GitHub</Button>
+                                      startIcon={<GitHubIcon/>}>前往 GitHub</Button>
                           </Box>
                       </CardContent>
                   </Card>

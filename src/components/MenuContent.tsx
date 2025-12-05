@@ -15,6 +15,9 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import Collapse from '@mui/material/Collapse';
 import InputIcon from '@mui/icons-material/Input';
 import {context} from "../exportType";
+import AlertDialog from './AlertDialog';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
 
 // NOTE: /plans 接口返回格式可能为 { success: true, plans: [...] } 或直接为数组
 // 菜单会使用 plan.filename 或 plan.name 作为路由段（filename 优先），并把该值作为 /scheme/<id> 的路径。
@@ -46,9 +49,17 @@ export default function MenuContent() {
     const [plansLoading, setPlansLoading] = useState<boolean>(false);
     const [plansError, setPlansError] = useState<string | null>(null);
 
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertTitle, setAlertTitle] = useState('');
+    const [alertContent, setAlertContent] = useState('');
+
     const loadPlans = React.useCallback(async () => {
+        setAlertOpen(false);
         if (!backend) {
             setPlansError('未配置后端地址');
+            setAlertOpen(true);
+            setAlertTitle('加载失败');
+            setAlertContent('未配置后端地址');
             return;
         }
         // 如果已有缓存并非强制刷新，可先保留并再异步刷新
@@ -60,6 +71,9 @@ export default function MenuContent() {
                 const text = await res.text().catch(() => '');
                 setPlansLoading(false);
                 setPlansError(`HTTP ${res.status} ${res.statusText} ${text}`);
+                setAlertOpen(true);
+                setAlertTitle('加载失败');
+                setAlertContent(`HTTP ${res.status} ${res.statusText} ${text}`);
                 return;
             }
             const j = await res.json();
@@ -86,6 +100,9 @@ export default function MenuContent() {
         } catch (err: any) {
             setPlansLoading(false);
             setPlansError(err?.message ?? String(err));
+            setAlertOpen(true);
+            setAlertTitle('加载失败');
+            setAlertContent(err?.message ?? String(err));
         }
     }, [backend]);
 
@@ -159,13 +176,24 @@ export default function MenuContent() {
                     return (
                         <React.Fragment key={index}>
                             <ListItem key={index} disablePadding sx={{display: 'block', paddingBottom: '2px'}}>
-                                <ListItemButton
-                                    selected={item.path === pathname || (Array.isArray(subList) && subList.some(subItem => subItem.path === pathname))}
-                                    onClick={() => handleItemClick(item.path, item.subItems)}
-                                >
-                                    <ListItemIcon>{item.icon}</ListItemIcon>
-                                    <ListItemText primary={item.text}/>
-                                </ListItemButton>
+                                <Stack direction="row" alignItems="center" sx={{width: '100%'}}>
+                                    <ListItemButton
+                                        selected={item.path === pathname || (Array.isArray(subList) && subList.some(subItem => subItem.path === pathname))}
+                                        onClick={() => handleItemClick(item.path, item.subItems)}
+                                        sx={{flexGrow: 1}}
+                                    >
+                                        <ListItemIcon>{item.icon}</ListItemIcon>
+                                        <ListItemText primary={item.text}/>
+                                    </ListItemButton>
+                                    {item.path === '/scheme' && (plansLoading ?
+                                        <CircularProgress size={20} sx={{ml: 0.5}}/> : plansError ? <Button
+                                            variant="contained"
+                                            color={'error'}
+                                            sx={{marginRight: 2, height: 24}}
+                                            onClick={() => {
+                                                loadPlans();
+                                            }}>重试</Button> : null)}
+                                </Stack>
                             </ListItem>
                             {/* 子列表 */}
                             <Collapse in={openSubItems === item.path} timeout="auto">
@@ -182,25 +210,6 @@ export default function MenuContent() {
                                             </ListItemButton>
                                         </ListItem>
                                     ))}
-                                    {plansLoading && subList.length === 0 && (
-                                        <ListItem disablePadding sx={{pl: 4, paddingBottom: '2px'}}>
-                                            <ListItemText primary="加载中..."/>
-                                        </ListItem>
-                                    )}
-                                    {plansError && (
-                                        <ListItem disablePadding sx={{pl: 4, paddingBottom: '2px'}}>
-                                            <ListItemText primary={`加载失败`} sx={{color: 'red'}}/>
-                                        </ListItem>
-                                    )}
-                                    {plansError && (
-                                        <ListItem disablePadding sx={{pl: 4, paddingBottom: '2px'}}>
-                                            <ListItemButton onClick={() => {
-                                                loadPlans();
-                                            }}>
-                                                <ListItemText primary="重试"/>
-                                            </ListItemButton>
-                                        </ListItem>
-                                    )}
                                 </List>
                             </Collapse>
                         </React.Fragment>
@@ -212,7 +221,9 @@ export default function MenuContent() {
                     <ListItem key={index} disablePadding sx={{display: 'block', paddingBottom: '2px'}}>
                         <ListItemButton
                             selected={item.path === useLocation().pathname}
-                            onClick={() => {navigate(item.path);}}
+                            onClick={() => {
+                                navigate(item.path);
+                            }}
                         >
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.text}/>
@@ -220,6 +231,8 @@ export default function MenuContent() {
                     </ListItem>
                 ))}
             </List>
+            <AlertDialog open={alertOpen} title={alertTitle} content={alertContent}
+                         onClose={() => setAlertOpen(false)}/>
         </Stack>
     );
 }

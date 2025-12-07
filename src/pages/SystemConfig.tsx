@@ -13,6 +13,46 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import AlertDialog from '../components/AlertDialog';
 import ErrorRetryPanel from '../components/ErrorRetryPanel';
+import {buildBackendUrl} from '../config/api';
+
+type RawConfig = {
+    base?: { S?: number; U?: number };
+    solver?: { name?: string; max_time?: number; gap_tol?: number; verbose?: number };
+    time?: number;
+    output?: { save_results?: boolean; result_path?: string };
+};
+
+const defaultSolverName = 'cplex';
+
+function parseConfig(raw: RawConfig | null | undefined) {
+    const cfg = raw ?? {};
+    const toNumberOrEmpty = (value?: number): number | '' => (typeof value === 'number' ? value : '');
+    return {
+        baseS: toNumberOrEmpty(cfg.base?.S),
+        baseU: toNumberOrEmpty(cfg.base?.U),
+        solverName: cfg.solver?.name ?? defaultSolverName,
+        solverMaxTime: toNumberOrEmpty(cfg.solver?.max_time),
+        solverGapTol: toNumberOrEmpty(cfg.solver?.gap_tol),
+        solverVerbose: toNumberOrEmpty(cfg.solver?.verbose),
+        timePeriods: toNumberOrEmpty(cfg.time),
+        outputSaveResults: Boolean(cfg.output?.save_results),
+        outputPath: cfg.output?.result_path ?? '',
+    };
+}
+
+function serializeConfig(state: ReturnType<typeof parseConfig>) {
+    return {
+        base: {S: Number(state.baseS), U: Number(state.baseU)},
+        solver: {
+            name: state.solverName,
+            max_time: Number(state.solverMaxTime),
+            gap_tol: Number(state.solverGapTol),
+            verbose: Number(state.solverVerbose),
+        },
+        time: Number(state.timePeriods),
+        output: {save_results: Boolean(state.outputSaveResults), result_path: state.outputPath},
+    };
+}
 
 export default function SystemConfig() {
     // 配置状态与加载/保存状态
@@ -23,7 +63,7 @@ export default function SystemConfig() {
     // config state（根据接口返回示例）
     const [baseS, setBaseS] = React.useState<number | ''>('');
     const [baseU, setBaseU] = React.useState<number | ''>('');
-    const [solverName, setSolverName] = React.useState<string>('cplex');
+    const [solverName, setSolverName] = React.useState<string>(defaultSolverName);
     const [solverMaxTime, setSolverMaxTime] = React.useState<number | ''>('');
     const [solverGapTol, setSolverGapTol] = React.useState<number | ''>('');
     const [solverVerbose, setSolverVerbose] = React.useState<number | ''>('');
@@ -40,7 +80,7 @@ export default function SystemConfig() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch('http://127.0.0.1:5000/config');
+            const res = await fetch(buildBackendUrl('/config'));
             let data: any = null;
             try {
                 data = await res.json();
@@ -60,17 +100,16 @@ export default function SystemConfig() {
                 return;
             }
 
-            const cfg = data?.config ?? {};
-            // 按示例结构解析并填充到表单状态（做存在性检查）
-            setBaseS(cfg?.base?.S ?? '');
-            setBaseU(cfg?.base?.U ?? '');
-            setSolverName(cfg?.solver?.name ?? 'cplex');
-            setSolverMaxTime(cfg?.solver?.max_time ?? '');
-            setSolverGapTol(cfg?.solver?.gap_tol ?? '');
-            setSolverVerbose(cfg?.solver?.verbose ?? '');
-            setTimePeriods(cfg?.time ?? '');
-            setOutputSaveResults(Boolean(cfg?.output?.save_results));
-            setOutputPath(cfg?.output?.result_path ?? '');
+            const parsed = parseConfig(data?.config);
+            setBaseS(parsed.baseS);
+            setBaseU(parsed.baseU);
+            setSolverName(parsed.solverName);
+            setSolverMaxTime(parsed.solverMaxTime);
+            setSolverGapTol(parsed.solverGapTol);
+            setSolverVerbose(parsed.solverVerbose);
+            setTimePeriods(parsed.timePeriods);
+            setOutputSaveResults(parsed.outputSaveResults);
+            setOutputPath(parsed.outputPath);
 
             setLoading(false);
         } catch (e: any) {
@@ -87,21 +126,20 @@ export default function SystemConfig() {
         if (saving === 'loading') return;
         setSaving('loading');
 
-        // 构建提交对象，仅包含需要写入的字段
-        const body: any = {
-            base: {S: Number(baseS), U: Number(baseU)},
-            solver: {
-                name: solverName,
-                max_time: Number(solverMaxTime),
-                gap_tol: Number(solverGapTol),
-                verbose: Number(solverVerbose)
-            },
-            time: Number(timePeriods),
-            output: {save_results: Boolean(outputSaveResults), result_path: outputPath}
-        };
+        const body = serializeConfig({
+            baseS,
+            baseU,
+            solverName,
+            solverMaxTime,
+            solverGapTol,
+            solverVerbose,
+            timePeriods,
+            outputSaveResults,
+            outputPath,
+        } as ReturnType<typeof parseConfig>);
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/config', {
+            const res = await fetch(buildBackendUrl('/config'), {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(body),
@@ -127,16 +165,16 @@ export default function SystemConfig() {
                     setAlertOpen(true);
                     // 重新加载后端返回的 config
                     if (data?.config) {
-                        const cfg = data?.config ?? {};
-                        setBaseS(cfg?.base?.S ?? '');
-                        setBaseU(cfg?.base?.U ?? '');
-                        setSolverName(cfg?.solver?.name ?? 'cplex');
-                        setSolverMaxTime(cfg?.solver?.max_time ?? '');
-                        setSolverGapTol(cfg?.solver?.gap_tol ?? '');
-                        setSolverVerbose(cfg?.solver?.verbose ?? '');
-                        setTimePeriods(cfg?.time ?? '');
-                        setOutputSaveResults(Boolean(cfg?.output?.save_results));
-                        setOutputPath(cfg?.output?.result_path ?? '');
+                        const parsed = parseConfig(data?.config);
+                        setBaseS(parsed.baseS);
+                        setBaseU(parsed.baseU);
+                        setSolverName(parsed.solverName);
+                        setSolverMaxTime(parsed.solverMaxTime);
+                        setSolverGapTol(parsed.solverGapTol);
+                        setSolverVerbose(parsed.solverVerbose);
+                        setTimePeriods(parsed.timePeriods);
+                        setOutputSaveResults(parsed.outputSaveResults);
+                        setOutputPath(parsed.outputPath);
                     } else {
                         // 如果没有返回 config，则尝试重新 GET
                         await loadConfig();
@@ -307,4 +345,3 @@ export default function SystemConfig() {
         </Box>
     )
 }
-

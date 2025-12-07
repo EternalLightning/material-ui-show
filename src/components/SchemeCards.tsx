@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import {CardActionArea} from "@mui/material";
@@ -16,6 +16,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import AlertDialog from './AlertDialog';
 import ErrorRetryPanel from './ErrorRetryPanel';
+import {usePlans} from '../hooks/usePlans';
+import {buildBackendUrl} from '../config/api';
 
 
 type RemoteCard = {
@@ -24,8 +26,6 @@ type RemoteCard = {
     description?: React.ReactNode;
 };
 
-const TIMEOUT_MS = 8000; // 请求超时阈值，毫秒
-
 type SchemeCardsProps = {
     refreshKey?: number;
     // allowDelete 控制是否在卡片被选中时显示删除按钮（首页等场景可设为 false）
@@ -33,11 +33,7 @@ type SchemeCardsProps = {
 }
 
 const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true}) => {
-    // cards === null 表示尚未成功获取；loading 控制是否显示加载中
-    const [cards, setCards] = useState<RemoteCard[] | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    // 被选中的卡片（点击后显示删除按钮），存储 title 与 filename
+    const {plans: cards, loading, error, reload: loadPlans} = usePlans({deps: [refreshKey]});
     const [selected, setSelected] = useState<{ title: string, filename?: string | null } | null>(null);
     // 删除中状态，防止重复点击
     const [deleting, setDeleting] = useState<boolean>(false);
@@ -50,69 +46,6 @@ const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true
     const [alertDialogOpen, setAlertDialogOpen] = useState(false);
     const [alertDialogTitle, setAlertDialogTitle] = useState<string | undefined>(undefined);
     const [alertDialogContent, setAlertDialogContent] = useState<React.ReactNode | undefined>(undefined);
-
-    const loadPlans = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        setCards(null);
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-        try {
-            const res = await fetch('http://127.0.0.1:5000/plans', {signal: controller.signal});
-            clearTimeout(timeoutId);
-
-            let data: any = null;
-            try {
-                data = await res.json();
-            } catch (e) { /* ignore JSON parse error */
-            }
-
-            if (!res.ok) {
-                const msg = data?.message || `获取方案失败，状态码：${res.status}`;
-                setError(msg);
-                setLoading(false);
-                return;
-            }
-
-            if (!data?.success || !Array.isArray(data?.plans)) {
-                setError('后端返回格式不正确');
-                setLoading(false);
-                return;
-            }
-
-            const plans = data?.plans || [];
-            const remote = plans.map((p: any, idx: number) => {
-                if (typeof p === 'string') {
-                    return {title: p, filename: null, description: '无文件'};
-                }
-                // 期望 p 为 { name: string, filename: string | null }
-                return {
-                    title: p.name || `方案 ${idx + 1}`,
-                    filename: p.filename ?? null,
-                    description: p.filename ?? '无文件'
-                };
-            });
-
-            setCards(remote);
-            setLoading(false);
-            setError(null);
-        } catch (e: any) {
-            clearTimeout(timeoutId);
-            if (e?.name === 'AbortError') {
-                setError('请求超时，请重试');
-            } else {
-                setError('获取方案列表失败：' + (e?.message || String(e)));
-            }
-            setLoading(false);
-        }
-    }, []);
-
-    // 首次挂载以及 refreshKey 变化时重新加载
-    useEffect(() => {
-        loadPlans();
-    }, [loadPlans, refreshKey]);
 
     // 点击卡片切换选中状态
     const handleCardClick = (card: RemoteCard) => {
@@ -139,7 +72,7 @@ const SchemeCards: React.FC<SchemeCardsProps> = ({refreshKey, allowDelete = true
             const body: any = {name: card.title};
             if (card.filename) body.filename = card.filename;
 
-            const res = await fetch('http://127.0.0.1:5000/plans', {
+            const res = await fetch(buildBackendUrl('/plans'), {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(body),

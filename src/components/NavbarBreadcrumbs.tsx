@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs, {breadcrumbsClasses} from '@mui/material/Breadcrumbs';
 import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 import {useLocation} from "react-router-dom";
+import {buildBackendUrl} from '../config/api';
 
 const StyledBreadcrumbs = styled(Breadcrumbs)(({theme}) => ({
     margin: theme.spacing(1, 0),
@@ -45,9 +46,7 @@ async function resolveSchemeNameFromBackend(pathname: string): Promise<string | 
 
     // 请求后端 /plans
     try {
-        const base = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BACKEND_URL) ? String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, '') : '';
-        if (!base) return decoded;
-        const res = await fetch(base + '/plans');
+        const res = await fetch(buildBackendUrl('/plans'));
         if (!res.ok) return decoded;
         const j = await res.json();
         let plans: any[] = [];
@@ -98,7 +97,7 @@ export default function NavbarBreadcrumbs() {
         >
             <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
             {currentPath.startsWith('/scheme/') && (
-                <Typography variant="body1">方案基础信息</Typography>
+                <Typography variant="body1">方案信息</Typography>
             )}
             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
                 {currentPath.startsWith('/scheme/') ? (schemeLabel ?? '方案') : (pathName.get(currentPath) ?? '')}

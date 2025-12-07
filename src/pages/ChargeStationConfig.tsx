@@ -9,6 +9,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ClearIcon from '@mui/icons-material/Clear';
 import SchemeCards from "../components/SchemeCards";
 import AlertDialog from '../components/AlertDialog';
+import {buildBackendUrl} from '../config/api';
 
 export default function ChargeStationConfig() {
     // 按钮状态管理
@@ -71,7 +72,7 @@ export default function ChargeStationConfig() {
         formData.append('file', file);
 
         try {
-            const res = await fetch('http://127.0.0.1:5000/upload', {
+            const res = await fetch(buildBackendUrl('/upload'), {
                 method: 'POST',
                 body: formData,
             });

@@ -11,9 +11,10 @@ import {axisClasses} from '@mui/x-charts/ChartsAxis';
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {transformBackendToFrontend} from '../data/transformBackend';
-import ErrorRetryPanel from '../components/ErrorRetryPanel';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import {buildBackendUrl, getBackendUrl} from '../config/api';
+import AlertDialog from '../components/AlertDialog';
+import Button from '@mui/material/Button';
 import {colDefs} from '../data/data_col_def';
 import {useLocation} from 'react-router-dom';
 
@@ -25,10 +26,12 @@ const Scheme: React.FC = () => {
     // 状态：加载、错误、后端数据
     const [loading, setLoading] = React.useState<boolean>(false);
     const [backendData, setBackendData] = React.useState<any>(null);
-    const [errorPayload, setErrorPayload] = React.useState<any>(null);
+    const [retrying, setRetrying] = React.useState(false);
+    const [alertOpen, setAlertOpen] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState<string>('');
 
     // 读取后端地址（来自 vite 环境变量 VITE_BACKEND_URL）。若未配置，回退到 localhost:5000，方便开发测试。
-    const backendUrl = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BACKEND_URL) ? String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, '') : 'http://127.0.0.1:5000';
+    const backendUrl = getBackendUrl();
 
     const location = useLocation();
     const defaultName = React.useMemo(() => {
@@ -46,13 +49,14 @@ const Scheme: React.FC = () => {
         const baseName = baseOnly.replace(/\.[^.]+$/, ''); // 去掉扩展名
 
         setLoading(true);
-        setErrorPayload(null);
+        setRetrying(true);
+        setAlertMessage('');
 
         // 后端仅提供 /data/filename 路由，使用 basename 构造 /data/<baseName>
         let lastError: any = null;
         const p = `/data/${encodeURIComponent(baseName)}`;
         try {
-            const url = backendUrl + p;
+            const url = buildBackendUrl(p);
             const res = await fetch(url, {method: 'GET'});
             if (!res.ok) {
                 lastError = `HTTP ${res.status} ${res.statusText} when requesting ${p}`;
@@ -67,14 +71,16 @@ const Scheme: React.FC = () => {
                         const transformed = transformBackendToFrontend(payload);
                         setBackendData(transformed);
                         setLoading(false);
-                        setErrorPayload(null);
+                        setAlertMessage('');
+                        setRetrying(false);
                         return;
                     }
                 } else {
                     const transformed = transformBackendToFrontend(json);
                     setBackendData(transformed);
                     setLoading(false);
-                    setErrorPayload(null);
+                    setAlertMessage('');
+                    setRetrying(false);
                     return;
                 }
             }
@@ -83,9 +89,11 @@ const Scheme: React.FC = () => {
         }
 
         const detail = typeof lastError === 'string' ? lastError : (lastError && lastError.message) ? lastError.message : '无法从后端加载指定文件';
-        setErrorPayload({message: '后端数据加载失败', detail});
+        setAlertMessage(detail);
+        setAlertOpen(true);
         setBackendData(null);
         setLoading(false);
+        setRetrying(false);
     }, [backendUrl]);
 
     // 直接使用后端数据（忽略父组件传入的 data）
@@ -103,19 +111,22 @@ const Scheme: React.FC = () => {
 
     // 统一重试函数：优先使用路由中的 defaultName，否则请求 /plans 并加载第一个方案
     const handleRetry = React.useCallback(async () => {
-        setErrorPayload(null);
+        setAlertMessage('');
         if (defaultName) {
             await fetchData(defaultName);
             return;
         }
         try {
             setLoading(true);
-            const res = await fetch(backendUrl + '/plans');
+            setRetrying(true);
+            const res = await fetch(buildBackendUrl('/plans'));
             if (!res.ok) {
                 const text = await res.text().catch(() => '');
                 const detail = `HTTP ${res.status} ${res.statusText} ${text}`;
-                setErrorPayload({message: '后端方案列表加载失败', detail});
+                setAlertMessage(detail);
+                setAlertOpen(true);
                 setLoading(false);
+                setRetrying(false);
                 return;
             }
             const j = await res.json();
@@ -124,16 +135,25 @@ const Scheme: React.FC = () => {
             else if (Array.isArray(j)) plans = j;
             else if (j && Array.isArray(j?.data)) plans = j.data;
             if (plans.length === 0) {
-                setErrorPayload({message: '后端未返回任何方案'});
+                const msg = '后端未返回任何方案';
+                setAlertMessage(msg);
+                setAlertOpen(true);
                 setLoading(false);
+                setRetrying(false);
                 return;
             }
             const first = plans[0];
             const id = typeof first === 'string' ? first : (first.filename ?? first.name ?? first);
             await fetchData(String(id));
-        } catch (err: any) {
-            setErrorPayload({message: '后端方案列表加载失败', detail: String(err)});
+            setRetrying(false);
             setLoading(false);
+            return;
+        } catch (err: any) {
+            const detail = String(err);
+            setAlertMessage(detail);
+            setAlertOpen(true);
+            setLoading(false);
+            setRetrying(false);
         }
     }, [backendUrl, defaultName, fetchData]);
 
@@ -150,7 +170,7 @@ const Scheme: React.FC = () => {
     }, [handleRetry]);
 
     // 当加载中显示简单提示（在此组件不替换布局，仅不阻塞渲染）
-    if (loading) {
+    if (loading && !backendData) {
         return (
             <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200}}>
                 <CircularProgress/>
@@ -158,61 +178,33 @@ const Scheme: React.FC = () => {
         );
     }
 
-    // 如果没有数据，显示错误信息（只保留错误信息与重试），并允许打开详细对话框
-    if (!data) {
-        // 如果正在加载则显示加载指示
-        if (loading) {
-            return (
-                <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200}}>
-                    <CircularProgress/>
-                </Box>
-            );
-        }
-        return (
-            <Box sx={{p: 2}}>
-                <ErrorRetryPanel
-                    message={errorPayload && ('后端加载数据失败：' + errorPayload.detail) || '没有可用的数据。'}
-                    onRetry={() => handleRetry()}/>
-            </Box>
-        );
-    } else {
-        const bus_rows = data.bus_rows ?? data.bus ?? [];
-        const branch_rows = data.branch_rows ?? data.branch ?? [];
-        const gen_rows = data.gen_rows ?? data.gen ?? [];
-        const pv_rows = data.pv_rows ?? data.solar_rows ?? data.pv ?? data.solar ?? [];
-        const wind_rows = data.wind_rows ?? data.wind ?? [];
-        const ess_rows = data.ess_rows ?? data.storage_rows ?? data.ess ?? data.storage ?? [];
-
-        const network_name = data.network_name ?? data.name ?? 'NETWORK';
-        const gen_num = data.gen_num ?? (Array.isArray(gen_rows) ? gen_rows.length : 0);
-        const solar_num = data.solar_num ?? (Array.isArray(pv_rows) ? pv_rows.length : 0);
-        const wind_num = data.wind_num ?? (Array.isArray(wind_rows) ? wind_rows.length : 0);
-        const ess_num = data.storage_num ?? data.ess_num ?? (Array.isArray(ess_rows) ? ess_rows.length : 0);
-
-        const price = data.price ?? [];
-        const solar_irradiance = data.solar_irradiance ?? [];
-        const wind_speed = data.wind_speed ?? [];
-        const pd = data.pd ?? [];
-        const ev_demand = data.ev_demand ?? data.ev ?? Array.from({length: 24}, () => 0);
-
-        return (
+    const content = data ? (
+        <>
             <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
-                <Typography component="h2" variant="h6" gutterBottom>
-                    方案详细信息
-                </Typography>
+                <Box display="flex" alignItems="center" justifyContent="space-between" sx={{mb: 2}}>
+                    <Typography component="h2" variant="h6">
+                        方案详细信息
+                    </Typography>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                        <Button variant="contained" color="error" onClick={handleRetry} disabled={retrying}>
+                            重试
+                        </Button>
+                        {retrying && <CircularProgress size={20}/>}
+                    </Box>
+                </Box>
                 <Card variant="outlined" sx={{marginBottom: 3}}>
                     <Typography component="h1" variant="subtitle1" gutterBottom>
                         拓扑信息
                     </Typography>
                     <Typography variant="body1" gutterBottom>
-                        网络名称：{network_name}
+                        网络名称：{data.network_name ?? data.name ?? 'NETWORK'}
                     </Typography>
                     <Grid container spacing={2} columns={12}>
                         <Grid size={{xs: 12, md: 12, lg: 12, xl: 6}}>
-                            <DataGrid rows={bus_rows} columns={bus_columns}/>
+                            <DataGrid rows={data.bus_rows ?? data.bus ?? []} columns={bus_columns}/>
                         </Grid>
                         <Grid size={{xs: 12, md: 12, lg: 12, xl: 6}}>
-                            <DataGrid rows={branch_rows} columns={branch_columns}/>
+                            <DataGrid rows={data.branch_rows ?? data.branch ?? []} columns={branch_columns}/>
                         </Grid>
                     </Grid>
                 </Card>
@@ -226,9 +218,9 @@ const Scheme: React.FC = () => {
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
                                     小型发电机
                                 </Typography>
-                                <DataGrid rows={gen_rows} columns={gen_columns}/>
+                                <DataGrid rows={data.gen_rows ?? data.gen ?? []} columns={gen_columns}/>
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
-                                    最多可配置数：{gen_num}
+                                    最多可配置数：{data.gen_num ?? (Array.isArray(data.gen_rows) ? data.gen_rows.length : 0)}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -239,9 +231,10 @@ const Scheme: React.FC = () => {
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
                                     光伏发电
                                 </Typography>
-                                <DataGrid rows={pv_rows} columns={pv_columns}/>
+                                <DataGrid rows={data.pv_rows ?? data.solar_rows ?? data.pv ?? data.solar ?? []}
+                                          columns={pv_columns}/>
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
-                                    最多可配置数：{solar_num}
+                                    最多可配置数：{data.solar_num ?? (Array.isArray(data.pv_rows) ? data.pv_rows.length : 0)}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -252,9 +245,9 @@ const Scheme: React.FC = () => {
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
                                     风力发电
                                 </Typography>
-                                <DataGrid rows={wind_rows} columns={wind_columns}/>
+                                <DataGrid rows={data.wind_rows ?? data.wind ?? []} columns={wind_columns}/>
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
-                                    最多可配置数：{wind_num}
+                                    最多可配置数：{data.wind_num ?? (Array.isArray(data.wind_rows) ? data.wind_rows.length : 0)}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -265,9 +258,10 @@ const Scheme: React.FC = () => {
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
                                     储能电站
                                 </Typography>
-                                <DataGrid rows={ess_rows} columns={ess_columns}/>
+                                <DataGrid rows={data.ess_rows ?? data.storage_rows ?? data.ess ?? data.storage ?? []}
+                                          columns={ess_columns}/>
                                 <Typography component="h1" variant="subtitle1" gutterBottom>
-                                    最多可配置数：{ess_num}
+                                    最多可配置数：{data.storage_num ?? data.ess_num ?? (Array.isArray(data.ess_rows) ? data.ess_rows.length : 0)}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -303,7 +297,7 @@ const Scheme: React.FC = () => {
                                 ))}
                             </Select>
                         </Box>
-                        <LineChart data={pd[powerBusNum - 1]} xLabel={'时段'} yLabel={'功率 (kW)'}
+                        <LineChart data={data.pd?.[powerBusNum - 1]} xLabel={'时段'} yLabel={'功率 (kW)'}
                                    sLabel={'功率'}/>
                     </CardContent>
                 </Card>
@@ -349,7 +343,7 @@ const Scheme: React.FC = () => {
                                 {
                                     color: 'rgba(0,140,140,0.86)',
                                     label: '充电数量',
-                                    data: ev_demand,
+                                    data: data.ev_demand ?? data.ev ?? Array.from({length: 24}, () => 0),
                                 },
                             ]}
                             grid={{horizontal: true}}
@@ -371,7 +365,7 @@ const Scheme: React.FC = () => {
                 </Typography>
                 <Card variant="outlined" sx={{width: '100%', marginBottom: 3}}>
                     *时段设置为 24 。
-                    <LineChart data={price} xLabel={'时段'} yLabel={'电价 (元/kWh)'} sLabel={'电价'}/>
+                    <LineChart data={data.price} xLabel={'时段'} yLabel={'电价 (元/kWh)'} sLabel={'电价'}/>
                 </Card>
                 <Typography component="h2" variant="h6" gutterBottom>
                     辐照度和风力信息
@@ -380,20 +374,49 @@ const Scheme: React.FC = () => {
                     <Grid size={{xs: 20, md: 6}}>
                         <Card variant="outlined" sx={{width: '100%'}}>
                             *时段设置为 24 。
-                            <LineChart data={solar_irradiance} xLabel={'时段'} yLabel={'辐照度 (W/m²)'}
+                            <LineChart data={data.solar_irradiance} xLabel={'时段'} yLabel={'辐照度 (W/m²)'}
                                        sLabel={'辐照度'}/>
                         </Card>
                     </Grid>
                     <Grid size={{xs: 20, md: 6}}>
                         <Card variant="outlined" sx={{width: '100%'}}>
                             *时段设置为 24 。
-                            <LineChart data={wind_speed} xLabel={'时段'} yLabel={'风力 (m/s)'} sLabel={'风力'}/>
+                            <LineChart data={data.wind_speed} xLabel={'时段'} yLabel={'风力 (m/s)'} sLabel={'风力'}/>
                         </Card>
                     </Grid>
                 </Grid>
             </Box>
-        );
-    }
+        </>
+    ) : (
+        <Box sx={{width: '100%', maxWidth: {sm: '100%', md: '1900px'}}}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{mb: 2}}>
+                <Typography component="h2" variant="h6">
+                    方案详细信息
+                </Typography>
+                <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
+                    <Button variant="contained" color="error" onClick={handleRetry} disabled={retrying}>
+                        重试
+                    </Button>
+                    {retrying && <CircularProgress size={20}/>}
+                </Box>
+            </Box>
+            <Card variant="outlined" sx={{p: 4}}>
+                <Typography variant="body1" color="text.secondary">
+                    当前没有可展示的方案数据，请点击右侧重试按钮重新获取。
+                </Typography>
+            </Card>
+        </Box>
+    );
+
+    return (
+        <>
+            {content}
+            <AlertDialog open={alertOpen} title="提示" content={alertMessage} onClose={() => {
+                setAlertOpen(false);
+                setRetrying(false);
+            }}/>
+        </>
+    );
 }
 
 export default Scheme;

@@ -16,6 +16,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ErrorRetryPanel from '../components/ErrorRetryPanel';
+import {usePlans} from '../hooks/usePlans';
 
 function createData(
     head: string,
@@ -36,75 +37,13 @@ const rows = [
 export default function DataCalculation() {
 
     const [selectedCard, setSelectedCard] = React.useState(0);
-    // 从后端获取的方案列表
-    const [plans, setPlans] = React.useState<Array<{
-        title: string;
-        filename?: string | null;
-        description?: React.ReactNode
-    }> | null>(null);
-    const [plansLoading, setPlansLoading] = React.useState<boolean>(true);
-    const [plansError, setPlansError] = React.useState<string | null>(null);
+    const {plans, loading: plansLoading, error: plansError, reload: reloadPlans} = usePlans();
     const [loading, setLoading] = React.useState(false);
     const [message, setMessage] = React.useState(<></>);
 
-    // 后端请求超时阈值
-    const TIMEOUT_MS = 8000;
-
-    const loadPlans = React.useCallback(async () => {
-        setPlansLoading(true);
-        setPlansError(null);
-        setPlans(null);
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-        try {
-            const res = await fetch('http://127.0.0.1:5000/plans', {signal: controller.signal});
-            clearTimeout(timeoutId);
-
-            let data: any = null;
-            try {
-                data = await res.json();
-            } catch (e) { /* ignore */
-            }
-
-            if (!res.ok) {
-                const msg = data?.message || `获取方案失败，状态码：${res.status}`;
-                setPlansError(msg);
-                setPlansLoading(false);
-                return;
-            }
-
-            if (!data?.success || !Array.isArray(data?.plans)) {
-                setPlansError('后端返回格式不正确');
-                setPlansLoading(false);
-                return;
-            }
-
-            const remote = (data?.plans ?? []).map((p: any, idx: number) => {
-                if (typeof p === 'string') return {title: p, filename: null, description: '无文件'};
-                return {
-                    title: p.name || `方案 ${idx + 1}`,
-                    filename: p.filename ?? null,
-                    description: p.filename ?? '无文件'
-                };
-            });
-
-            setPlans(remote);
-            setPlansLoading(false);
-            setPlansError(null);
-        } catch (e: any) {
-            clearTimeout(timeoutId);
-            if (e?.name === 'AbortError') setPlansError('请求超时，请重试');
-            else setPlansError('获取方案列表失败：' + (e?.message || String(e)));
-            setPlansLoading(false);
-        }
-    }, []);
-
-    // 首次挂载加载 plans
     React.useEffect(() => {
-        loadPlans();
-    }, [loadPlans]);
+        reloadPlans();
+    }, [reloadPlans]);
 
     const handleClick = () => {
         setLoading(true);
@@ -192,7 +131,7 @@ export default function DataCalculation() {
                 </Box>
             ) : plansError ? (
                 <Box sx={{p: 2}}>
-                    <ErrorRetryPanel message={plansError} onRetry={() => loadPlans()}/>
+                    <ErrorRetryPanel message={plansError} onRetry={reloadPlans}/>
                 </Box>
             ) : (
                 <Grid container spacing={2} columns={12}>

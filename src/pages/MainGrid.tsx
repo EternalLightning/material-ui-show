@@ -19,9 +19,9 @@ export default function MainGrid() {
 
     // 示例统计数据（可替换为真实后端数据）
     const stats: StatCardProps[] = [
-        {title: '累计计算次数', value: '128', interval: '近30天', trend: 'up', data: [10, 12, 8, 14, 16, 20]},
-        {title: '最近计算耗时', value: '00:02:34', interval: '上次运行', trend: 'neutral', data: [2, 3, 4, 2, 5, 3]},
-        {title: '当前方案数量', value: '8', interval: '实时', trend: 'up', data: [5, 6, 7, 8, 8, 8]},
+        {title: '累计计算次数', value: '7', interval: '近30天', data: []},
+        {title: '最近计算耗时', value: '00:02:34', interval: '上次运行', data: []},
+        {title: '当前方案数量', value: '1', interval: '实时', data: []},
     ];
 
   return (
@@ -46,15 +46,15 @@ export default function MainGrid() {
                               搭建，用于组织案例、上传数据、配置求解器并运行优化程序。
                           </Typography>
                           <Typography variant="body2" color="text.secondary" sx={{mb: 1}}>
-                              主要功能示例：
+                              主要功能：
                               <ul>
-                                  <li>管理案例与上传数据（network / pv / wind / ess 等矩阵）。</li>
-                                  <li>配置求解参数（求解器、时间步、输出路径等）。</li>
-                                  <li>启动计算并查看优化结果与配置方案。</li>
+                                  <li>管理案例与上传数据</li>
+                                  <li>配置求解参数（求解器、时间步、输出路径等）</li>
+                                  <li>启动计算并查看优化结果与配置方案</li>
                               </ul>
                           </Typography>
                           <Typography variant="caption" color="text.secondary">更多详细说明请查看项目
-                              README。</Typography>
+                              README 文件。</Typography>
                       </CardContent>
                   </Card>
               </Grid>

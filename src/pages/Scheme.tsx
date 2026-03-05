@@ -185,12 +185,12 @@ const Scheme: React.FC = () => {
                     <Typography component="h2" variant="h6">
                         方案详细信息
                     </Typography>
-                    <Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>
-                        <Button variant="contained" color="error" onClick={handleRetry} disabled={retrying}>
-                            重试
-                        </Button>
-                        {retrying && <CircularProgress size={20}/>}
-                    </Box>
+                    {/*<Box sx={{display: 'flex', alignItems: 'center', gap: 1}}>*/}
+                    {/*    <Button variant="contained" color="error" onClick={handleRetry} disabled={retrying}>*/}
+                    {/*        重试*/}
+                    {/*    </Button>*/}
+                    {/*    {retrying && <CircularProgress size={20}/>}*/}
+                    {/*</Box>*/}
                 </Box>
                 <Card variant="outlined" sx={{marginBottom: 3}}>
                     <Typography component="h1" variant="subtitle1" gutterBottom>

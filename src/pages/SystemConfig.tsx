@@ -310,7 +310,7 @@ export default function SystemConfig() {
                     </Grid>
                     <Grid size={{xs: 2}}>
                         <TextField
-                            label="结果保存路径"
+                            label="文件名"
                             id="result-save-path"
                             variant="standard"
                             value={outputPath}

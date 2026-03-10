@@ -17,6 +17,7 @@ import Scheme from "./pages/Scheme"
 import DataCalculation from "./pages/DataCalculation";
 import {chartsCustomizations, dataGridCustomizations,} from './customizations';
 import Copyright from './components/Copyright'
+import About from "./pages/About";
 
 
 const xThemeComponents = {
@@ -114,7 +115,7 @@ const router = createBrowserRouter([
         path: "/about",
         element: (
             <MainPage disableCustomTheme={false}>
-                <p></p>
+                <About/>
             </MainPage>
         ),
     },

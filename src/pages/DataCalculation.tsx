@@ -23,15 +23,14 @@ function createData(
     wind: number,
     pv: number,
     ess: number,
-    v2g: number,
-    fastCharge: number,
+    sop: number,
 ) {
-    return {head, wind, pv, ess, v2g, fastCharge};
+    return {head, wind, pv, ess, sop};
 }
 
 const rows = [
-    createData('容量 (MVA)', 100, 100, 100, 100, 100),
-    createData('数量', 2, 2, 2, 2, 2),
+    createData('容量 (MVA)', 0.23, 0.40, 0, 0),
+    createData('数量', 3, 3, 0, 0),
 ];
 
 export default function DataCalculation() {
@@ -57,7 +56,7 @@ export default function DataCalculation() {
                         </Typography>
                         <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
                             <Typography variant="body1" gutterBottom>
-                                总运行成本为 10000 元，其中投资成本为 5000 元，运行成本为 5000 元。
+                                总运行成本为 90303.15 元，其中投资成本为 4123.22 元，运行成本为 86179.93 元。
                             </Typography>
                         </Card>
                         <Typography component={'h2'} variant="h6" gutterBottom>
@@ -76,9 +75,8 @@ export default function DataCalculation() {
                                             <TableCell/>
                                             <TableCell align="center">风电</TableCell>
                                             <TableCell align="center">光伏</TableCell>
-                                            <TableCell align="center">储能</TableCell>
-                                            <TableCell align="center">V2G 桩</TableCell>
-                                            <TableCell align="center">快充桩</TableCell>
+                                            <TableCell align="center">储能系统</TableCell>
+                                            <TableCell align="center">智能软开关</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -93,8 +91,7 @@ export default function DataCalculation() {
                                                 <TableCell align="center">{row.wind}</TableCell>
                                                 <TableCell align="center">{row.pv}</TableCell>
                                                 <TableCell align="center">{row.ess}</TableCell>
-                                                <TableCell align="center">{row.v2g}</TableCell>
-                                                <TableCell align="center">{row.fastCharge}</TableCell>
+                                                <TableCell align="center">{row.sop}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

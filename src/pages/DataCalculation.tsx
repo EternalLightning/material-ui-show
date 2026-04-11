@@ -8,30 +8,8 @@ import Button from "@mui/material/Button";
 import CalculateIcon from '@mui/icons-material/Calculate';
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import ErrorRetryPanel from '../components/ErrorRetryPanel';
 import {usePlans} from '../hooks/usePlans';
-
-function createData(
-    head: string,
-    wind: number,
-    pv: number,
-    ess: number,
-    sop: number,
-) {
-    return {head, wind, pv, ess, sop};
-}
-
-const rows = [
-    createData('容量 (MVA)', 0.23, 0.40, 0, 0),
-    createData('数量', 3, 3, 0, 0),
-];
 
 export default function DataCalculation() {
 
@@ -56,47 +34,141 @@ export default function DataCalculation() {
                         </Typography>
                         <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
                             <Typography variant="body1" gutterBottom>
-                                总运行成本为 90303.15 元，其中投资成本为 4123.22 元，运行成本为 86179.93 元。
+                                总运行成本为 85545.05 元，其中投资成本为 2588.88 元，运行成本为 82956.17 元。
                             </Typography>
                         </Card>
                         <Typography component={'h2'} variant="h6" gutterBottom>
                             优化配置结果
                         </Typography>
                         <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
-                            <TableContainer component={Paper}>
-                                <Table sx={{
-                                    minWidth: 650,
-                                    '& .MuiTableCell-root': {
-                                        borderColor: 'rgb(209,206,206)', // 分割线为纯黑色
-                                    }
-                                }} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell/>
-                                            <TableCell align="center">风电</TableCell>
-                                            <TableCell align="center">光伏</TableCell>
-                                            <TableCell align="center">储能系统</TableCell>
-                                            <TableCell align="center">智能软开关</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {rows.map((row) => (
-                                            <TableRow
-                                                key={row.head}
-                                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    {row.head}
-                                                </TableCell>
-                                                <TableCell align="center">{row.wind}</TableCell>
-                                                <TableCell align="center">{row.pv}</TableCell>
-                                                <TableCell align="center">{row.ess}</TableCell>
-                                                <TableCell align="center">{row.sop}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            <Typography component={'h3'} variant="h6" gutterBottom>
+                                风机配置结果
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 9</Typography>
+                                            <Typography variant="body1">配置容量: 226.71 kVA</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 14</Typography>
+                                            <Typography variant="body1">配置容量: 417.57 kVA</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 29</Typography>
+                                            <Typography variant="body1">配置容量: 539.67 kVA</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                            <Typography component={'h3'} variant="h6" gutterBottom>
+                                光伏配置结果
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 4</Typography>
+                                            <Typography variant="body1">配置容量: 400 kWp</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 19</Typography>
+                                            <Typography variant="body1">配置容量: 400 kWp</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 23</Typography>
+                                            <Typography variant="body1">配置容量: 400 kWp</Typography>
+                                            <Typography variant="body1">数量: 1</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                            <Typography component={'h3'} variant="h6" gutterBottom>
+                                储能电站配置结果
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 6</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
+                            <Typography component={'h3'} variant="h6" gutterBottom>
+                                智能软开关配置结果
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 8-21</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 12-22</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 9-15</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 18-33</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                                <Grid size={{xs: 12, sm: 6, md: 4}}>
+                                    <Card variant="outlined" sx={{marginBottom: 1}}>
+                                        <CardContent>
+                                            <Typography variant="body1">节点编号: 25-29</Typography>
+                                            <Typography variant="body1">配置容量: 0 kVA</Typography>
+                                            <Typography variant="body1">数量: 0</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            </Grid>
                         </Card>
                     </>
                 );

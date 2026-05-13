@@ -34,7 +34,7 @@ export default function DataCalculation() {
                         </Typography>
                         <Card variant="outlined" sx={{marginBottom: 3, height: '100%', flexGrow: 1}}>
                             <Typography variant="body1" gutterBottom>
-                                总运行成本为 85545.05 元，其中投资成本为 2588.88 元，运行成本为 82956.17 元。
+                                总运行成本为 75947.13 元，其中投资成本为 2477.18 元，运行成本为 73469.95 元。
                             </Typography>
                         </Card>
                         <Typography component={'h2'} variant="h6" gutterBottom>
@@ -185,7 +185,7 @@ export default function DataCalculation() {
                     </Typography>
                 );
             }
-        }, 700);
+        }, 1600);
     };
 
     return (

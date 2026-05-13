@@ -80,7 +80,7 @@ export default function AppNavbar() {
                             aria-label="breadcrumb"
                             separator={<NavigateNextRoundedIcon fontSize="small"/>}
                         >
-                            <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
+                            <Typography variant="body1">面向承载力提升的优化配置计算平台</Typography>
                             <Typography variant="body1" sx={{color: 'text.primary', fontWeight: 600}}>
                                 test
                             </Typography>

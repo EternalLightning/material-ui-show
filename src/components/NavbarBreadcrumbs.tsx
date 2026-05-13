@@ -95,7 +95,7 @@ export default function NavbarBreadcrumbs() {
             aria-label="breadcrumb"
             separator={<NavigateNextRoundedIcon fontSize="small"/>}
         >
-            <Typography variant="body1">电动汽车充电站配网优化项目</Typography>
+            <Typography variant="body1">面向承载力提升的优化配置平台</Typography>
             {currentPath.startsWith('/scheme/') && (
                 <Typography variant="body1">方案信息</Typography>
             )}

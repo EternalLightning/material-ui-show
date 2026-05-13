@@ -42,7 +42,7 @@ export default function MainGrid() {
                       <CardContent>
                           <Typography variant="h6" gutterBottom>项目简介</Typography>
                           <Typography variant="body2" color="text.secondary" sx={{mb: 1}}>
-                              本系统用于展示和管理电动汽车配网的潮流计算与优化结果。它基于 Material UI
+                              本系统用于展示和管理配电网的潮流计算与优化结果，基于 Material UI
                               搭建，用于组织案例、上传数据、配置求解器并运行优化程序。
                           </Typography>
                           <Typography variant="body2" color="text.secondary" sx={{mb: 1}}>

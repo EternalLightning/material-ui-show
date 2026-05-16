@@ -18,6 +18,7 @@ import DataCalculation from "./pages/DataCalculation";
 import {chartsCustomizations, dataGridCustomizations,} from './customizations';
 import Copyright from './components/Copyright'
 import About from "./pages/About";
+import CapacityAnalysis from "./pages/CapacityAnalysis";
 
 
 const xThemeComponents = {
@@ -125,6 +126,15 @@ const router = createBrowserRouter([
             <MainPage disableCustomTheme={false}>
                 <Scheme/>
             </MainPage>
+        ),
+    },
+    {
+        path: "/capacity",
+        element: (
+            <AppTheme disableCustomTheme={false} themeComponents={xThemeComponents}>
+                <CssBaseline enableColorScheme/>
+                <CapacityAnalysis/>
+            </AppTheme>
         ),
     },
 ]);
